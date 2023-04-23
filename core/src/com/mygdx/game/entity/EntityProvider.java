@@ -1,11 +1,12 @@
 package com.mygdx.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.Constants;
 
-public class EntityProvider{
+public class EntityProvider extends Sprite {
     private Vector2 moveDirection;
     private Rectangle rectangle;
 
