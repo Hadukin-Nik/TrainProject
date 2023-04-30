@@ -10,6 +10,17 @@ public class WorldContactListener implements ContactListener {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
         //int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
+        switch (cDef){
+            case BulletData.BULLET_BIT | BulletData.PLAYER_BIT:
+                if(fixA.getFilterData().categoryBits == BulletData.BULLET_BIT)
+                    ((EntityData)fixB.getUserData()).decreaseHP(((BulletData) fixA.getUserData()).damage());
+                else
+                    ((EntityData)fixA.getUserData()).decreaseHP(((BulletData) fixB.getUserData()).damage());
+                break;
+        }
+    }
     }
 
     @Override
