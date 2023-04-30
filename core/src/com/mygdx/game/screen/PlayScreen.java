@@ -27,7 +27,7 @@ public class PlayScreen implements Screen {
     //Main game handlerer
     private TrainGame game;
 
-    //Reference to our Game, used to set Screens
+    //Reference to Game, used to set Screens
     private TextureAtlas atlas;
     public static boolean alreadyDestroyed = false;
 
