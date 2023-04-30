@@ -20,9 +20,6 @@ public class PlayerProvider extends EntityProvider{
     public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD };
     private double stateTimer;
 
-    private PlayScreen screen;
-
-
     private State currentState;
     public State previousState;
 
@@ -49,7 +46,6 @@ public class PlayerProvider extends EntityProvider{
     public PlayerProvider(Vector2 location, EntityData data, PlayScreen screen) {
         super(location, data);
 
-        this.screen = screen;
         this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
