@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.constants.Constants;
 
-public class EntityData {
+public abstract class EntityData {
 
     private Texture texture;
 
@@ -43,6 +43,10 @@ public class EntityData {
 
     public double getSpeed() {
         return speed;
+    }
+
+    public void kill() {
+        hp = -1;
     }
 
 

@@ -25,4 +25,5 @@ public class BulletData extends EntityData {
     public double damage(){
         return damage;
     }
+
 }

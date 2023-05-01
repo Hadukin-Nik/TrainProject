@@ -1,8 +1,6 @@
 package com.mygdx.game.tools;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.constants.Masks;
-import com.mygdx.game.entity.PlayerProvider;
 
 public class WorldContactListener implements ContactListener {
     @Override

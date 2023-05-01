@@ -1,4 +1,4 @@
-package com.mygdx.game.entity;
+package com.mygdx.game.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,12 +11,14 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
+import com.mygdx.game.entity.EntityData;
+import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.screen.PlayScreen;
 
 /**
  *
  */
-public class PlayerProvider extends EntityProvider{
+public class PlayerProvider extends EntityProvider {
     public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD };
     private double stateTimer;
 

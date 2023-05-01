@@ -20,10 +20,12 @@ public class BulletProvider extends EntityProvider {
         float y =  (float) (rectangle.y + bulletData.getSpeed() * move.y * time);
         rectangle = rectangle.setPosition(x, y);
     }
-    public void update(Rectangle player, double time){
-        moveByDirection(time);
-        if (rectangle.overlaps(player)){
-            eD.decreaseHP(bulletData.damage());
-        }
+    public void update(double time){
+        if(bulletData.isAlive()) moveByDirection(time);
+    }
+
+    public void damage(EntityData entityData) {
+        entityData.decreaseHP(bulletData.damage());
+        bulletData.kill();
     }
 }
