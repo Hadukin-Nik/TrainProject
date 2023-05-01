@@ -1,8 +1,12 @@
 package com.mygdx.game.tools;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
-import com.mygdx.game.entity.PlayerProvider;
+import com.mygdx.game.entity.EntityProvider;
+import com.mygdx.game.entity.bullet.BulletProvider;
+import com.mygdx.game.entity.player.PlayerData;
+import com.mygdx.game.entity.player.PlayerProvider;
 
 public class WorldContactListener implements ContactListener {
     @Override
@@ -13,15 +17,17 @@ public class WorldContactListener implements ContactListener {
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         switch (cDef){
-            case BulletData.BULLET_BIT | BulletData.PLAYER_BIT:
-                if(fixA.getFilterData().categoryBits == BulletData.BULLET_BIT)
-                    ((EntityData)fixB.getUserData()).decreaseHP(((BulletData) fixA.getUserData()).damage());
-                else
-                    ((EntityData)fixA.getUserData()).decreaseHP(((BulletData) fixB.getUserData()).damage());
+            case Masks.BULLET_BIT | Masks.PLAYER_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.BULLET_BIT) {
+                    ((BulletProvider)fixA.getUserData()).damage(((PlayerProvider) fixB.getUserData()).getEntityData());
+                }
+                else {
+                    ((BulletProvider)fixB.getUserData()).damage(((PlayerProvider) fixA.getUserData()).getEntityData());
+                }
                 break;
         }
     }
-    }
+
 
     @Override
     public void endContact(Contact contact) {
