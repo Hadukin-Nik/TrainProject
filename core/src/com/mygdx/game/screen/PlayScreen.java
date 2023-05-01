@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.TrainGame;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.entity.EntityData;
+import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 import com.mygdx.game.scenes.Hud;
 import com.mygdx.game.tools.B2WorldCreator;
@@ -81,7 +82,7 @@ public class PlayScreen implements Screen {
 
 
         //create player in our game world
-        player = new PlayerProvider(new Vector2(0, 0), new EntityData(), this);
+        player = new PlayerProvider(new Vector2(0, 0), new PlayerData(), this);
 
         world.setContactListener(new WorldContactListener());
     }
@@ -97,23 +98,8 @@ public class PlayScreen implements Screen {
 
     }
 
-    public void handleInput(float dt){
-        //control our player using immediate impulses
-        if(player.getState() != PlayerProvider.State.DEAD) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
-                player.jump();
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
-                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
-                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
-        }
-
-    }
 
     public void update(float dt){
-        //handle user input first
-        handleInput(dt);
-
         //takes 1 step in the physics simulation(60 times per second)
         world.step(1 / 60f, 6, 2);
 
@@ -123,7 +109,7 @@ public class PlayScreen implements Screen {
 
         //attach our gamecam to our players.x coordinate
         if(player.getState() != PlayerProvider.State.DEAD) {
-            gamecam.position.x = player.b2body.getPosition().x;
+            gamecam.position.x = player.getPosition().x;
         }
 
         /*if(player.getState() != PlayerProvider.State.DEAD) {

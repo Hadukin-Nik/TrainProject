@@ -1,42 +1,48 @@
 package com.mygdx.game.entity;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.constants.Constants;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class EntityProvider extends Sprite {
-    private Vector2 moveDirection;
+    public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD };
+
+    protected double stateTimer;
+
+    protected State currentState;
+    protected State previousState;
+
+    protected World world;
+    protected Body b2body;
+
     private EntityData entityData;
-    protected Vector2 velocity;
-
-    private double stateTimer;
 
 
-    public EntityProvider(EntityData data) {
-        this.entityData = data;
+    public EntityProvider(EntityData entityData) {
+        currentState = State.STANDING;
+        this.entityData = entityData;
     }
 
-    public EntityProvider(Vector2 location, EntityData data) {
-        this.entityData = data;
+    public State getState() {
+        if(!entityData.isAlive()) {
+            return State.DEAD;
+        }
+        else if((b2body.getLinearVelocity().y > 0 && currentState == State.JUMPING)){
+            return State.JUMPING;
+        }
+        else if(b2body.getLinearVelocity().y < 0)
+            return State.FALLING;
+        else if(b2body.getLinearVelocity().x != 0)
+            return State.RUNNING;
+        else
+            return State.STANDING;
+
+
     }
 
-    public void applyImpulse(Vector2 impulse) {
-
+    public Vector2 getPosition() {
+        return  b2body.getPosition();
     }
 
-    public Texture getTexture() {
-        return entityData.getTexture();
-    }
-
-    public Vector2 getLocation() {
-    }
-
-    public void update(double time) {
-    }
-
-    public double getStateTimer() {
-        return stateTimer;
-    }
 }

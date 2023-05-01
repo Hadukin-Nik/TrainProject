@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
-import com.mygdx.game.entity.EntityData;
 import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.screen.PlayScreen;
 
@@ -19,34 +17,19 @@ import com.mygdx.game.screen.PlayScreen;
  *
  */
 public class PlayerProvider extends EntityProvider {
-    public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD };
-    private double stateTimer;
-
-    private State currentState;
-    public State previousState;
-
-    private boolean runningRight;
-    private boolean isDead;
-
+    protected boolean runningRight;
 
     private TextureRegion playerStand;
     private TextureRegion playerJump;
 
-
     private Animation playerRun;
 
+    private PlayerData playerData;
 
-    public World world;
-    public Body b2body;
-
-    private Box2D box;
-
-    public PlayerProvider(EntityData data) {
+    public PlayerProvider(Vector2 location, PlayerData data, PlayScreen screen) {
         super(data);
-    }
 
-    public PlayerProvider(Vector2 location, EntityData data, PlayScreen screen) {
-        super(location, data);
+        playerData = data;
 
         this.world = screen.getWorld();
         currentState = State.STANDING;
@@ -54,10 +37,10 @@ public class PlayerProvider extends EntityProvider {
         stateTimer = 0;
         runningRight = true;
 
-        Array<TextureRegion> frames = new Array<TextureRegion>();
+        /*Array<TextureRegion> frames = new Array<TextureRegion>();
 
         //get run animation frames and add them to playerRun Animation
-        /*for(int i = 1; i < 4; i++)
+        for(int i = 1; i < 4; i++)
             frames.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"), i * 16, 0, 16, 16));
         playerRun = new Animation(0.1f, frames);
 
@@ -77,33 +60,20 @@ public class PlayerProvider extends EntityProvider {
         definePlayer();
 
         //set initial values for players location, width and height. And initial frame as marioStand.
-        setBounds(0, 0, 16 / Constants.PPM, 16 / Constants.PPM);
+        setBounds(location.x, location.y, 16 / Constants.PPM, 16 / Constants.PPM);
         setRegion(playerStand);
     }
     /**
      * @param time delta time of screen update
      */
     public void update(double time) {
+        handleInput(time);
+
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         currentState = getState();
 
         //update sprite with the correct frame depending on marios current action
         //setRegion(getFrame(time));
-    }
-
-    public State getState() {
-        if(isDead) {
-            return State.DEAD;
-        }
-        else if((b2body.getLinearVelocity().y > 0 && currentState == State.JUMPING)){
-            return State.JUMPING;
-        }
-        else if(b2body.getLinearVelocity().y < 0)
-            return State.FALLING;
-        else if(b2body.getLinearVelocity().x != 0)
-            return State.RUNNING;
-        else
-            return State.STANDING;
     }
 
     public void jump(){
@@ -129,6 +99,18 @@ public class PlayerProvider extends EntityProvider {
         b2body.createFixture(fdef).setUserData(this);
 
         b2body.createFixture(fdef).setUserData(this);
+    }
+
+    public void handleInput(double dt) {
+        //control our player using immediate impulses
+        if(getState() != State.DEAD) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+                jump();
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && b2body.getLinearVelocity().x <= 2)
+                b2body.applyLinearImpulse(new Vector2(0.1f, 0), b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && b2body.getLinearVelocity().x >= -2)
+                b2body.applyLinearImpulse(new Vector2(-0.1f, 0), b2body.getWorldCenter(), true);
+        }
     }
 
     public void draw(Batch batch){

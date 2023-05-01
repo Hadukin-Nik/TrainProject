@@ -6,14 +6,12 @@ import com.mygdx.game.constants.Constants;
 
 public abstract class EntityData {
 
-    private Texture texture;
+    protected Texture texture;
 
-    private double speed;
-    private double hp;
+    protected double speed;
+    protected double hp;
 
-    public EntityData(double speed, double hp, String pathFromAssetsToImage) {
-        texture = new Texture(Gdx.files.internal(pathFromAssetsToImage));
-
+    public EntityData(double speed, double hp) {
         this.speed = speed;
         this.hp = hp;
     }
