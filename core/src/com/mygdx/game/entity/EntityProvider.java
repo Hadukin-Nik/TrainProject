@@ -37,8 +37,6 @@ public abstract class EntityProvider extends Sprite {
             return State.RUNNING;
         else
             return State.STANDING;
-
-
     }
 
     public Vector2 getPosition() {

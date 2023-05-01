@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.constants.Constants;
 
 public abstract class EntityData {
-
-    protected Texture texture;
-
     protected double speed;
     protected double hp;
 
@@ -17,8 +14,6 @@ public abstract class EntityData {
     }
 
     public EntityData() {
-        this.texture = new Texture(Gdx.files.internal(Constants.PATH_TO_STANDART_IMAGE));
-
         this.speed = Constants.SPEED_STANDART;
         this.hp = Constants.HP_STANDART;
     }
@@ -27,9 +22,6 @@ public abstract class EntityData {
         return hp > 0;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
 
     public double getHp() {
         return hp;

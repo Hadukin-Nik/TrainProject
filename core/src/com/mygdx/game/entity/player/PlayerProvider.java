@@ -57,7 +57,7 @@ public class PlayerProvider extends EntityProvider {
 
 
         //define mario in Box2d
-        definePlayer();
+        definePlayer(location);
 
         //set initial values for players location, width and height. And initial frame as marioStand.
         setBounds(location.x, location.y, 16 / Constants.PPM, 16 / Constants.PPM);
@@ -83,21 +83,20 @@ public class PlayerProvider extends EntityProvider {
         }
     }
 
-    public void definePlayer(){
+    public void definePlayer(Vector2 location){
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32 / Constants.PPM, 32 / Constants.PPM);
+        bdef.position.set(location.x / Constants.PPM, location.y / Constants.PPM);
+
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(8 / Constants.PPM);
-        fdef.filter.categoryBits = 1;
-        fdef.filter.maskBits = Masks.GROUND_BIT | Masks.OBJECT_BIT;
+        fdef.filter.categoryBits = Masks.PLAYER_BIT;
+        fdef.filter.maskBits = Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.ENEMY_BIT | Masks.BULLET_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef).setUserData(this);
-
         b2body.createFixture(fdef).setUserData(this);
     }
 

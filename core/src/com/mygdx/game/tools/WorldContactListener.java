@@ -18,10 +18,12 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef){
             case Masks.BULLET_BIT | Masks.PLAYER_BIT:
-                if(fixA.getFilterData().categoryBits == Masks.BULLET_BIT)
+                if(fixA.getFilterData().categoryBits == Masks.BULLET_BIT) {
                     ((BulletProvider)fixA.getUserData()).damage(((PlayerProvider) fixB.getUserData()).getEntityData());
-                else
+                }
+                else {
                     ((BulletProvider)fixB.getUserData()).damage(((PlayerProvider) fixA.getUserData()).getEntityData());
+                }
                 break;
         }
     }
