@@ -45,4 +45,7 @@ public abstract class EntityProvider extends Sprite {
         return  b2body.getPosition();
     }
 
+    public EntityData getEntityData() {
+        return entityData;
+    }
 }
