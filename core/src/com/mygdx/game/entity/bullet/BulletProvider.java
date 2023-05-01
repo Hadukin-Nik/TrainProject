@@ -1,6 +1,7 @@
 package com.mygdx.game.entity.bullet;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -59,22 +60,33 @@ public class BulletProvider extends EntityProvider {
         b2body.createFixture(fdef).setUserData(this);
     }
 
+    @Override
+    public void draw(Batch batch) {
+        if(currentState != State.DEAD) super.draw(batch);
+    }
+
     public void moveByDirection(double time) {
 
         b2body.applyLinearImpulse(new Vector2((float) (move.x * time), (float) (move.y * time)), b2body.getWorldCenter(), true);
     }
 
     public void update(double time){
-        if(bulletData.isAlive()) moveByDirection(time);
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        if(!setToDestroy && currentState != State.DEAD) {
+            moveByDirection(time);
 
-        stateTimer += time;
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+
+            stateTimer += time;
+        } else if (setToDestroy && currentState != State.DEAD){
+            currentState = State.DEAD;
+            world.destroyBody(b2body);
+            setToDestroy = false;
+        }
     }
 
     public void damage(EntityData entityData) {
         entityData.decreaseHP(bulletData.damage());
-        bulletData.kill();
-        currentState = State.DEAD;
+        setToDestroy = true;
         stateTimer = 0;
     }
 }
