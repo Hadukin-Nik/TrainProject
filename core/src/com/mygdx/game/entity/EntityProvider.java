@@ -40,6 +40,7 @@ public abstract class EntityProvider extends Sprite {
         else
             return State.STANDING;
     }
+    public abstract void update(double time);
 
     public Vector2 getPosition() {
         return  b2body.getPosition();

@@ -19,6 +19,9 @@ import com.mygdx.game.constants.Constants;
 import com.mygdx.game.entity.EntityData;
 import com.mygdx.game.entity.bullet.BulletData;
 import com.mygdx.game.entity.bullet.BulletProvider;
+import com.mygdx.game.entity.enemy.EnemyData;
+import com.mygdx.game.entity.enemy.EnemyProvider;
+import com.mygdx.game.entity.enemy.bug.BugProvider;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 import com.mygdx.game.scenes.Hud;
@@ -53,7 +56,7 @@ public class PlayScreen implements Screen {
 
     //sprites
     private PlayerProvider player;
-    private BulletProvider bullet;
+    private EnemyProvider enemy;
 
     public PlayScreen(TrainGame trainGame){
         //atlas = new TextureAtlas("Mario_and_Enemies.pack");
@@ -86,10 +89,8 @@ public class PlayScreen implements Screen {
 
         //create player in our game world
         player = new PlayerProvider(new Vector2(32, 32), new PlayerData(), this);
-
+        enemy = new BugProvider(this, new EnemyData(),new Vector2(100, 32), 4);
         world.setContactListener(new WorldContactListener());
-
-        bullet = new BulletProvider(this.world, new Vector2(100, 32), new BulletData(new Vector2(8, 8), 2, 0.3, 1, 1), new Vector2(-1, 0));
     }
 
 
@@ -109,7 +110,7 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
-        bullet.update(dt);
+        enemy.update(dt);
         hud.update(dt);
 
         //attach our gamecam to our players.x coordinate
@@ -147,7 +148,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        bullet.draw(game.batch);
+        enemy.draw(game.batch);
         //Enenmies, Items, Piggies... Trains?
         game.batch.end();
 

@@ -5,6 +5,7 @@ import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
 import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.entity.bullet.BulletProvider;
+import com.mygdx.game.entity.enemy.EnemyProvider;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 
@@ -23,6 +24,14 @@ public class WorldContactListener implements ContactListener {
                 }
                 else {
                     ((BulletProvider)fixB.getUserData()).damage(((PlayerProvider) fixA.getUserData()).getEntityData());
+                }
+                break;
+            case Masks.ENEMY_BIT | Masks.PLAYER_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.ENEMY_BIT) {
+                    ((EnemyProvider)fixA.getUserData()).damage(((PlayerProvider) fixB.getUserData()).getEntityData());
+                }
+                else {
+                    ((EnemyProvider)fixB.getUserData()).damage(((PlayerProvider) fixA.getUserData()).getEntityData());
                 }
                 break;
         }
