@@ -43,7 +43,7 @@ public abstract class EntityProvider extends Sprite {
     public abstract void update(double time);
 
     public Vector2 getPosition() {
-        return  b2body.getPosition();
+        return b2body.getPosition();
     }
 
     public EntityData getEntityData() {

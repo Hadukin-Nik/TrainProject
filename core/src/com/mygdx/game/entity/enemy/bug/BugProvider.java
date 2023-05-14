@@ -13,30 +13,50 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
 import com.mygdx.game.entity.EntityData;
+import com.mygdx.game.entity.EntityProvider;
+import com.mygdx.game.entity.bullet.BulletData;
+import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.entity.enemy.EnemyProvider;
+import com.mygdx.game.entity.player.PlayerProvider;
 import com.mygdx.game.screen.PlayScreen;
+
+import java.util.List;
+import java.util.Random;
 
 public class BugProvider extends EnemyProvider {
     private double damage;
-    public BugProvider(PlayScreen screen, EntityData enemyData, Vector2 position, double damage) {
+    private double timeToAttack;
+    private double time;
+
+    private double attackRange;
+
+    private Random random;
+
+    public BugProvider(PlayScreen screen, EntityData enemyData, Vector2 position, double damage, double reloadTime, double attackRange) {
         super(screen, enemyData, position);
         this.damage = damage;
 
         stateTimer = 0;
 
-        setBounds(getX(), getY(), 8 / Constants.PPM, 8 / Constants.PPM);
+        setBounds(position.x, position.y, 8 / Constants.PPM, 8 / Constants.PPM);
 
         setToDestroy = false;
 
         currentState = previousState = State.STANDING;
 
-        setRegion(new TextureRegion(new Texture(Constants.PATH_TO_STANDART_IMAGE), 8, 8));
+        timeToAttack = reloadTime;
+
+        random = new Random();
+
+        this.attackRange = attackRange;
+
+        setRegion(new TextureRegion(new Texture(Constants.PATH_TO_STANDART_IMAGE), 16, 16));
     }
 
     @Override
-    protected void defineEnemy() {
+    protected void defineEnemy(Vector2 position) {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(getX(), getY());
+        bdef.position.set(position.x / Constants.PPM, position.y / Constants.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
@@ -66,6 +86,26 @@ public class BugProvider extends EnemyProvider {
 
     @Override
     public void update(double time) {
+        if(this.time >= 0) {
+            this.time -= time;
+        }
+
+        if(this.time <= 0) {
+            float dist = playerProvider.getPosition().dst(b2body.getPosition());
+            Vector2 pp = playerProvider.getPosition();
+            if(playerProvider != null && playerProvider.getEntityData().isAlive() && dist <= attackRange*attackRange) {
+                this.time = timeToAttack;
+                float x = pp.x - b2body.getPosition().x;
+                float y = pp.y - b2body.getPosition().y;
+                Vector2 dir = new Vector2(x, y);
+
+                Vector2 loc = new Vector2(b2body.getPosition().x * Constants.PPM, b2body.getPosition().y * Constants.PPM);
+
+                BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, 0.4, 1.0, 1.0), dir.nor());
+                screen.addToUpdate(bullet);
+            }
+        }
+
         stateTimer += time;
         if(setToDestroy && currentState != State.DEAD){
             world.destroyBody(b2body);
@@ -73,7 +113,7 @@ public class BugProvider extends EnemyProvider {
             stateTimer = 0;
         }
         else if(currentState != State.DEAD) {
-            b2body.setLinearVelocity(velocity);
+            //b2body.applyLinearImpulse(velocity, b2body.getWorldCenter(), true);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         }
     }

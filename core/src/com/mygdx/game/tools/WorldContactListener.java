@@ -21,9 +21,11 @@ public class WorldContactListener implements ContactListener {
             case Masks.BULLET_BIT | Masks.PLAYER_BIT:
                 if(fixA.getFilterData().categoryBits == Masks.BULLET_BIT) {
                     ((BulletProvider)fixA.getUserData()).damage(((PlayerProvider) fixB.getUserData()).getEntityData());
+                    System.out.println(((PlayerProvider) fixB.getUserData()).getEntityData().getHp());
                 }
                 else {
                     ((BulletProvider)fixB.getUserData()).damage(((PlayerProvider) fixA.getUserData()).getEntityData());
+                    System.out.println(((PlayerProvider) fixA.getUserData()).getEntityData().getHp());
                 }
                 break;
             case Masks.ENEMY_BIT | Masks.PLAYER_BIT:

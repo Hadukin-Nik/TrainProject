@@ -67,7 +67,7 @@ public class BulletProvider extends EntityProvider {
 
     public void moveByDirection(double time) {
 
-        b2body.applyLinearImpulse(new Vector2((float) (move.x * time), (float) (move.y * time)), b2body.getWorldCenter(), true);
+        b2body.setLinearVelocity(move);
     }
 
     public void update(double time){
