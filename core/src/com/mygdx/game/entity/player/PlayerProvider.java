@@ -68,7 +68,6 @@ public class PlayerProvider extends EntityProvider {
      */
     public void update(double time) {
         handleInput(time);
-
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         currentState = getState();
 

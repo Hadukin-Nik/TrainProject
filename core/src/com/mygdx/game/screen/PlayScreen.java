@@ -17,13 +17,20 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.TrainGame;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.entity.EntityData;
+import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.entity.bullet.BulletData;
 import com.mygdx.game.entity.bullet.BulletProvider;
+import com.mygdx.game.entity.enemy.EnemyData;
+import com.mygdx.game.entity.enemy.EnemyProvider;
+import com.mygdx.game.entity.enemy.bug.BugProvider;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 import com.mygdx.game.scenes.Hud;
 import com.mygdx.game.tools.B2WorldCreator;
 import com.mygdx.game.tools.WorldContactListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayScreen implements Screen {
     //Main game handlerer
@@ -53,7 +60,9 @@ public class PlayScreen implements Screen {
 
     //sprites
     private PlayerProvider player;
-    private BulletProvider bullet;
+    private EnemyProvider enemy;
+
+    private List<EntityProvider> entitiesToUpdate;
 
     public PlayScreen(TrainGame trainGame){
         //atlas = new TextureAtlas("Mario_and_Enemies.pack");
@@ -86,10 +95,13 @@ public class PlayScreen implements Screen {
 
         //create player in our game world
         player = new PlayerProvider(new Vector2(32, 32), new PlayerData(), this);
+        enemy = new BugProvider(this, new EnemyData(),new Vector2(128, 32), 4, 1, 10);
+        enemy.addEnemy(player);
+        entitiesToUpdate = new ArrayList<>();
+        entitiesToUpdate.add(player);
+        entitiesToUpdate.add(enemy);
 
         world.setContactListener(new WorldContactListener());
-
-        bullet = new BulletProvider(this.world, new Vector2(100, 32), new BulletData(new Vector2(8, 8), 2, 0.3, 1, 1), new Vector2(-1, 0));
     }
 
 
@@ -108,8 +120,12 @@ public class PlayScreen implements Screen {
         //takes 1 step in the physics simulation(60 times per second)
         world.step(1 / 60f, 6, 2);
 
-        player.update(dt);
-        bullet.update(dt);
+        for(int i = 0; i < entitiesToUpdate.size(); i++) {
+            entitiesToUpdate.get(i).update(dt);
+        }
+
+        System.out.println("entities:" + entitiesToUpdate.size());
+
         hud.update(dt);
 
         //attach our gamecam to our players.x coordinate
@@ -128,7 +144,9 @@ public class PlayScreen implements Screen {
 
     }
 
-
+    public void addToUpdate(EntityProvider newEntity) {
+        entitiesToUpdate.add(newEntity);
+    }
     @Override
     public void render(float delta) {
         //separate our update logic from render
@@ -146,9 +164,11 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-        player.draw(game.batch);
-        bullet.draw(game.batch);
-        //Enenmies, Items, Piggies... Trains?
+
+        //Enemies, Items, Piggies... Trains?
+        for(EntityProvider i : entitiesToUpdate) {
+            i.draw(game.batch);
+        }
         game.batch.end();
 
         //Set our batch to now draw what the Hud camera sees.
