@@ -36,6 +36,14 @@ public class WorldContactListener implements ContactListener {
                     ((EnemyProvider)fixB.getUserData()).damage(((PlayerProvider) fixA.getUserData()).getEntityData());
                 }
                 break;
+            case Masks.ENEMY_BIT | Masks.BULLET_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.BULLET_BIT) {
+                    ((BulletProvider)fixA.getUserData()).damage(((EnemyProvider) fixB.getUserData()).getEntityData());
+                }
+                else {
+                    ((BulletProvider)fixB.getUserData()).damage(((EnemyProvider) fixA.getUserData()).getEntityData());
+                }
+                break;
         }
     }
 
