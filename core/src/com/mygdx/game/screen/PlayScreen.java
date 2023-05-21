@@ -18,6 +18,7 @@ import com.mygdx.game.TrainGame;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.entity.EntityData;
 import com.mygdx.game.entity.EntityProvider;
+
 import com.mygdx.game.entity.bullet.BulletData;
 import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.entity.enemy.EnemyData;
@@ -61,6 +62,7 @@ public class PlayScreen implements Screen {
     //sprites
     private PlayerProvider player;
     private EnemyProvider enemy;
+    private EnemyProvider enemy2;
 
     private List<EntityProvider> entitiesToUpdate;
 
@@ -74,8 +76,7 @@ public class PlayScreen implements Screen {
         gamePort = new FitViewport( (Constants.WIDTH_SCREEN_STANDART / Constants.PPM), (Constants.HEIGHT_SCREEN_STANDART / Constants.PPM), gamecam);
         this.game = trainGame;
 
-        //create our game HUD for scores/timers/level info
-        hud = new Hud(game.batch);
+
 
         //Load our map and setup our map renderer
         maploader = new TmxMapLoader();
@@ -95,13 +96,18 @@ public class PlayScreen implements Screen {
 
         //create player in our game world
         player = new PlayerProvider(new Vector2(32, 32), new PlayerData(), this);
-        enemy = new BugProvider(this, new EnemyData(),new Vector2(128, 32), 4, 1, 10);
+
+        enemy = new BugProvider(this, new EnemyData(),new Vector2(128, 32), 4, 1, 1);
         enemy.addEnemy(player);
+
         entitiesToUpdate = new ArrayList<>();
         entitiesToUpdate.add(player);
         entitiesToUpdate.add(enemy);
 
         world.setContactListener(new WorldContactListener());
+
+        //create our game HUD for scores/timers/level info
+        hud = new Hud(game.batch, (PlayerData) player.getEntityData());
     }
 
 
@@ -126,7 +132,7 @@ public class PlayScreen implements Screen {
 
         System.out.println("entities:" + entitiesToUpdate.size());
 
-        hud.update(dt);
+        hud.update();
 
         //attach our gamecam to our players.x coordinate
         if(player.getState() != PlayerProvider.State.DEAD) {
