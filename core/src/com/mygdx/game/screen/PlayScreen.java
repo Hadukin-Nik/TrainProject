@@ -62,6 +62,7 @@ public class PlayScreen implements Screen {
     //sprites
     private PlayerProvider player;
     private EnemyProvider enemy;
+    private EnemyProvider enemy2;
 
     private List<EntityProvider> entitiesToUpdate;
 
@@ -98,6 +99,7 @@ public class PlayScreen implements Screen {
 
         enemy = new BugProvider(this, new EnemyData(),new Vector2(128, 32), 4, 1, 1);
         enemy.addEnemy(player);
+
         entitiesToUpdate = new ArrayList<>();
         entitiesToUpdate.add(player);
         entitiesToUpdate.add(enemy);
