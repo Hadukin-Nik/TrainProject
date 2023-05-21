@@ -12,11 +12,11 @@ public class SpeedBoost extends  Effect{
     @Override
     public void ApplayEffect(PlayerProvider playerProvider) {
         this.playerProvider = playerProvider;
-        this.playerProvider.playerData.speed+=amount;
+        //this.playerProvider.playerData.speed+=amount;
     }
 
     @Override
     public void EndEffect() {
-        if(this.playerProvider.playerData.speed - this.amount > 0) playerProvider.playerData.speed-=this.amount;
+        //if(this.playerProvider.playerData.speed - this.amount > 0) playerProvider.playerData.speed-=this.amount;
     }
 }

@@ -12,11 +12,11 @@ public class JumpHeight extends Effect{
     @Override
     public void ApplayEffect(PlayerProvider playerProvider) {
         this.playerProvider = playerProvider;
-        this.playerProvider.playerData.jumpHeight+=amount/ Constants.PPM;
+        //this.playerProvider.playerData.jumpHeight+=amount/ Constants.PPM;
     }
 
     @Override
     public void EndEffect() {
-        if(this.playerProvider.playerData.jumpHeight - this.amount/Constants.PPM > 0) playerProvider.playerData.jumpHeight-=this.amount/Constants.PPM;
+        //if(this.playerProvider.playerData.jumpHeight - this.amount/Constants.PPM > 0) playerProvider.playerData.jumpHeight-=this.amount/Constants.PPM;
     }
 }

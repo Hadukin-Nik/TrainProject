@@ -76,7 +76,7 @@ public class BugProvider extends EnemyProvider {
 
     @Override
     public void damage(EntityData entityData) {
-        //entityData.decreaseHP(damage);
+        entityData.decreaseHP(damage);
     }
 
     @Override
