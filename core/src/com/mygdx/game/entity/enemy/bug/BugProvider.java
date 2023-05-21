@@ -76,7 +76,7 @@ public class BugProvider extends EnemyProvider {
 
     @Override
     public void damage(EntityData entityData) {
-        entityData.decreaseHP(damage);
+        //entityData.decreaseHP(damage);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class BugProvider extends EnemyProvider {
 
                 Vector2 loc = new Vector2(b2body.getPosition().x * Constants.PPM, b2body.getPosition().y * Constants.PPM);
 
-                BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, 0.4, 1.0, 1.0), dir.nor());
+                BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, 0.4, 1.0, 1.0), dir.nor(), Masks.PLAYER_BIT);
                 screen.addToUpdate(bullet);
             }
         }

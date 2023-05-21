@@ -13,9 +13,7 @@ import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
 import com.mygdx.game.screen.PlayScreen;
 
-/**
- * Created by brentaureli on 8/28/15.
- */
+
 public class B2WorldCreator {
 
     public B2WorldCreator(PlayScreen screen){
@@ -32,25 +30,25 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Constants.PPM, (rect.getY() + rect.getHeight() / 2) / Constants.PPM);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Constants.PPM / 4, (rect.getY() + rect.getHeight() / 2) / Constants.PPM / 4);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth() / 2 / Constants.PPM, rect.getHeight() / 2 / Constants.PPM);
+            shape.setAsBox(rect.getWidth() / 2 / 4 / Constants.PPM, rect.getHeight() / 2 / 4 / Constants.PPM);
             fdef.shape = shape;
             body.createFixture(fdef);
         }
 
-        //create pipe bodies/fixtures
+        //create boxes bodies/fixtures
         for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Constants.PPM, (rect.getY() + rect.getHeight() / 2) / Constants.PPM);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Constants.PPM / 4, (rect.getY() + rect.getHeight() / 2) / Constants.PPM / 4);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth() / 2 / Constants.PPM, rect.getHeight() / 2 / Constants.PPM);
+            shape.setAsBox(rect.getWidth() / 2 / 4 / Constants.PPM, rect.getHeight() / 2 / 4 / Constants.PPM);
             fdef.shape = shape;
             fdef.filter.categoryBits = Masks.OBJECT_BIT;
             body.createFixture(fdef);

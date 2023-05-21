@@ -19,7 +19,7 @@ public class BulletProvider extends EntityProvider {
     private TextureRegion bulletInFly;
     private Vector2 move;
 
-    public BulletProvider(World world, Vector2 location, BulletData data, Vector2 move){
+    public BulletProvider(World world, Vector2 location, BulletData data, Vector2 move, short colliableWith){
         super(data);
         this.move = move;
         this.world = world;
@@ -37,11 +37,11 @@ public class BulletProvider extends EntityProvider {
         setRegion(bulletInFly);
 
         //initialising bullet in box2d
-        defineBullet(location);
+        defineBullet(location, colliableWith);
 
     }
 
-    private void defineBullet(Vector2 location) {
+    private void defineBullet(Vector2 location, short colliableWith) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(location.x / Constants.PPM, location.y / Constants.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -54,7 +54,7 @@ public class BulletProvider extends EntityProvider {
         CircleShape shape = new CircleShape();
         shape.setRadius((float) (bulletData.getRadius() / Constants.PPM));
         fdef.filter.categoryBits = Masks.BULLET_BIT;
-        fdef.filter.maskBits = Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.PLAYER_BIT | Masks.BRICK_BIT;
+        fdef.filter.maskBits = (short) (Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.BRICK_BIT | colliableWith);
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -82,9 +82,14 @@ public class BulletProvider extends EntityProvider {
             world.destroyBody(b2body);
             setToDestroy = false;
         }
+
+        if(stateTimer > bulletData.getDeathTimer()) {
+            setToDestroy = true;
+        }
     }
 
     public void damage(EntityData entityData) {
+        if(currentState == State.DEAD) return;
         entityData.decreaseHP(bulletData.damage());
         setToDestroy = true;
         stateTimer = 0;

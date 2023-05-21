@@ -11,17 +11,21 @@ public class BulletData extends EntityData {
     private double radius;
     private Vector2 size;
 
+    private double deathTimer;
+
     public BulletData(Vector2 sizeOfBullet, double radius, double speed, double hp, double damage){
         super(speed, hp);
         this.damage = damage;
 
         this.size = sizeOfBullet;
         this.radius = radius;
+        deathTimer = Constants.BULLET_DEATH_TIMER;
     }
 
     public BulletData(){
         damage = 1;
         speed = 1000;
+        deathTimer = Constants.BULLET_DEATH_TIMER;
 
         size = new Vector2(8, 8);
     }
@@ -35,5 +39,9 @@ public class BulletData extends EntityData {
 
     public double getRadius() {
         return radius;
+    }
+
+    public double getDeathTimer() {
+        return deathTimer;
     }
 }

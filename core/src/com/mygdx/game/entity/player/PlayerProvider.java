@@ -11,7 +11,11 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
 import com.mygdx.game.entity.EntityProvider;
+import com.mygdx.game.entity.bullet.BulletData;
+import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.screen.PlayScreen;
+
+import java.util.Scanner;
 
 /**
  *
@@ -25,12 +29,16 @@ public class PlayerProvider extends EntityProvider {
     private Animation playerRun;
 
     private PlayerData playerData;
+    private float timerToShoot;
+
+    private PlayScreen screen;
 
     public PlayerProvider(Vector2 location, PlayerData data, PlayScreen screen) {
         super(data);
 
         playerData = data;
 
+        this.screen = screen;
         this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
@@ -67,9 +75,11 @@ public class PlayerProvider extends EntityProvider {
      * @param time delta time of screen update
      */
     public void update(double time) {
+        timerToShoot = timerToShoot > 0 ? (float) (timerToShoot - time) : 0;
         handleInput(time);
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         currentState = getState();
+        setRegion(getFrame(time));
 
         //update sprite with the correct frame depending on marios current action
         //setRegion(getFrame(time));
@@ -108,6 +118,19 @@ public class PlayerProvider extends EntityProvider {
                 b2body.applyLinearImpulse(new Vector2(0.1f, 0), b2body.getWorldCenter(), true);
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && b2body.getLinearVelocity().x >= -2)
                 b2body.applyLinearImpulse(new Vector2(-0.1f, 0), b2body.getWorldCenter(), true);
+
+            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && timerToShoot == 0) {
+                timerToShoot = 1;
+
+                float x = runningRight ? 1 : -1;
+                float y = 0;
+                Vector2 dir = new Vector2(x, y);
+
+                Vector2 loc = new Vector2(b2body.getPosition().x * Constants.PPM, b2body.getPosition().y * Constants.PPM);
+
+                BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, 0.4, 1.0, 1.0), dir.nor(), Masks.ENEMY_BIT);
+                screen.addToUpdate(bullet);
+            }
         }
     }
 
@@ -116,12 +139,12 @@ public class PlayerProvider extends EntityProvider {
     }
 
     //getCurrentFrameDependingOnItsState(jump, standing, etc)
-    /*public TextureRegion getFrame(double dt){
+    public TextureRegion getFrame(double dt){
         currentState = getState();
 
-        TextureRegion region = null;
+        TextureRegion region = playerStand;
 
-        switch(currentState){
+        /*switch(currentState){
             case DEAD:
                 break;
             case JUMPING:
@@ -136,14 +159,11 @@ public class PlayerProvider extends EntityProvider {
                 //region = playerStand;
                 break;
         }
-
-        //if mario is running left and the texture isnt facing left... flip it.
+        */
         if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
             region.flip(true, false);
             runningRight = false;
         }
-
-        //if mario is running right and the texture isnt facing right... flip it.
         else if((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
             region.flip(true, false);
             runningRight = true;
@@ -157,5 +177,5 @@ public class PlayerProvider extends EntityProvider {
         //return our final adjusted frame
         return region;
 
-    }*/
+    }
 }
