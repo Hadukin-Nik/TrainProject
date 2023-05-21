@@ -118,7 +118,7 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         //takes 1 step in the physics simulation(60 times per second)
-        world.step(1 / 160f, 6, 2);
+        world.step(1 / 60f, 6, 2);
 
         for(int i = 0; i < entitiesToUpdate.size(); i++) {
             entitiesToUpdate.get(i).update(dt);

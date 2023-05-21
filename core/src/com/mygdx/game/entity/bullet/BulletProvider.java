@@ -82,6 +82,10 @@ public class BulletProvider extends EntityProvider {
             world.destroyBody(b2body);
             setToDestroy = false;
         }
+
+        if(stateTimer > bulletData.getDeathTimer()) {
+            setToDestroy = true;
+        }
     }
 
     public void damage(EntityData entityData) {

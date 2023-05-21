@@ -7,6 +7,7 @@ public class Constants {
 
     public static final float SPEED_STANDART = 1.0F;
     public static final float HP_STANDART = 10;
+    public static final float BULLET_DEATH_TIMER = 1.5f;
     public static final float PPM = 100;
 
     public static final float dampingPerSecond = 0.5f;
