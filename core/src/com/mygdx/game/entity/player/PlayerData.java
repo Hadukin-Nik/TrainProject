@@ -3,23 +3,29 @@ package com.mygdx.game.entity.player;
 import com.mygdx.game.entity.EntityData;
 
 public class PlayerData extends EntityData {
-    private double maxStamina;
-    private double stamina;
+    private float maxStamina = 100;
+    private float stamina = 100;
     public PlayerData() {
-        super();
+        super() ;
     }
 
-    public PlayerData(double speed, double hp, double maxStamina, double stamina) {
+    public PlayerData(double speed, double hp, float maxStamina, float stamina) {
         super(speed, hp);
         this.maxStamina = maxStamina;
         this.stamina = stamina;
     }
-    public double getStamina(){
+    public float getStamina(){
         return stamina;
     }
-    public void addStamina(double stamina){
+    public void addStamina(float stamina){
         if (this.stamina != maxStamina){
             this.stamina = (this.stamina + stamina > maxStamina ? maxStamina : this.stamina + stamina );
+
+        }
+    }
+    public void decreaseStamina(float stamina){
+        if (this.stamina > 0){
+            this.stamina -= stamina;
 
         }
     }

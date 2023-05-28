@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class EntityProvider extends Sprite {
-    public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD };
+    public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD, WALKING }
 
     protected double stateTimer;
 
@@ -36,7 +36,7 @@ public abstract class EntityProvider extends Sprite {
         else if(b2body.getLinearVelocity().y < 0)
             return State.FALLING;
         else if(b2body.getLinearVelocity().x != 0)
-            return State.RUNNING;
+            return State.WALKING;
         else
             return State.STANDING;
     }
