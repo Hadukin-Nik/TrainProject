@@ -17,13 +17,12 @@ public abstract class EntityProvider extends Sprite {
     protected World world;
     protected Body b2body;
 
-    private EntityData entityData;
+    protected EntityData entityData;
 
     protected boolean setToDestroy;
 
-    public EntityProvider(EntityData entityData) {
+    public EntityProvider() {
         currentState = State.STANDING;
-        this.entityData = entityData;
     }
 
     public State getState() {

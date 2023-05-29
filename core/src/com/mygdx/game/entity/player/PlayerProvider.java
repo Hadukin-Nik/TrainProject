@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
 import com.mygdx.game.effects.EffectManager;
+import com.mygdx.game.entity.EntityData;
 import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.entity.bullet.BulletData;
 import com.mygdx.game.entity.bullet.BulletProvider;
@@ -31,16 +32,15 @@ public class PlayerProvider extends EntityProvider {
 
     private EffectManager effectManager;
 
-    private PlayerData playerData;
     private float timerToShoot;
 
     private PlayScreen screen;
 
     public PlayerProvider(Vector2 location, PlayerData data, PlayScreen screen) {
-        super(data);
+        super();
 
         effectManager = new EffectManager(data);
-        playerData = data;
+        entityData = data;
 
         this.screen = screen;
         this.world = screen.getWorld();
@@ -89,6 +89,10 @@ public class PlayerProvider extends EntityProvider {
         //setRegion(getFrame(time));
     }
 
+    @Override
+    public EntityData getEntityData() {
+        return entityData;
+    }
 
 
     public void jump(){
@@ -193,4 +197,9 @@ public class PlayerProvider extends EntityProvider {
         return region;
 
     }
+
+    public EffectManager getEffectManager() {
+        return effectManager;
+    }
+
 }

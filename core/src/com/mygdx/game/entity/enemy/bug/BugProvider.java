@@ -30,8 +30,6 @@ public class BugProvider extends EnemyProvider {
 
     private double attackRange;
 
-    private Random random;
-
     public BugProvider(PlayScreen screen, EntityData enemyData, Vector2 position, double damage, double reloadTime, double attackRange) {
         super(screen, enemyData, position);
         this.damage = damage;
@@ -45,8 +43,6 @@ public class BugProvider extends EnemyProvider {
         currentState = previousState = State.STANDING;
 
         timeToAttack = reloadTime;
-
-        random = new Random();
 
         this.attackRange = attackRange;
 
