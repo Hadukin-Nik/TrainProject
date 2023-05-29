@@ -8,9 +8,12 @@ public abstract class EntityData {
     protected double speed;
     protected double hp;
 
+    protected double maxHP;
+
     public EntityData(double speed, double hp) {
         this.speed = speed;
         this.hp = hp;
+        maxHP = hp;
     }
 
     public EntityData() {
@@ -31,8 +34,16 @@ public abstract class EntityData {
         hp -= damage;
     }
 
+    public void addHP(double heal) {
+        hp = (Math.min(hp + heal, maxHP));
+    }
+
     public double getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     public void kill() {

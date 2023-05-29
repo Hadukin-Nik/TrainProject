@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
+import com.mygdx.game.effects.EffectManager;
 import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.entity.bullet.BulletData;
 import com.mygdx.game.entity.bullet.BulletProvider;
@@ -28,6 +29,8 @@ public class PlayerProvider extends EntityProvider {
 
     private Animation playerRun;
 
+    private EffectManager effectManager;
+
     private PlayerData playerData;
     private float timerToShoot;
 
@@ -36,6 +39,7 @@ public class PlayerProvider extends EntityProvider {
     public PlayerProvider(Vector2 location, PlayerData data, PlayScreen screen) {
         super(data);
 
+        effectManager = new EffectManager(data);
         playerData = data;
 
         this.screen = screen;
@@ -81,9 +85,11 @@ public class PlayerProvider extends EntityProvider {
         currentState = getState();
         setRegion(getFrame(time));
 
-        //update sprite with the correct frame depending on marios current action
+        //update sprite with the correct frame
         //setRegion(getFrame(time));
     }
+
+
 
     public void jump(){
         if ( currentState != State.JUMPING ) {

@@ -5,6 +5,9 @@ import com.mygdx.game.entity.EntityData;
 public class PlayerData extends EntityData {
     private double maxStamina;
     private double stamina;
+
+    private double jumpHeight;
+
     public PlayerData() {
         super();
     }
@@ -22,5 +25,13 @@ public class PlayerData extends EntityData {
             this.stamina = (this.stamina + stamina > maxStamina ? maxStamina : this.stamina + stamina );
 
         }
+    }
+
+    public void addJumpHeight(double height){
+        jumpHeight += height;
+    }
+
+    public void decreaseJumpHeight(double height){
+        jumpHeight -= height;
     }
 }

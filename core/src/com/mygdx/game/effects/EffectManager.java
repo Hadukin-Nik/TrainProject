@@ -1,15 +1,15 @@
-package com.mygdx.game.entity.effects;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+package com.mygdx.game.effects;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 
 import java.util.ArrayList;
 
 public class EffectManager {
-    ArrayList<Effect> effects;
-    PlayerProvider player;
+    private ArrayList<Effect> effects;
+    private PlayerData player;
 
-    public EffectManager(PlayerProvider player)
+
+    public EffectManager(PlayerData player)
     {
         this.player = player;
         effects = new ArrayList<>();
@@ -17,7 +17,7 @@ public class EffectManager {
     public void AddEffect(Effect effect)
     {
         effects.add(effect);
-        effect.ApplayEffect(player);
+        effect.ApplayEffect();
     }
 
     public void update(double time)
