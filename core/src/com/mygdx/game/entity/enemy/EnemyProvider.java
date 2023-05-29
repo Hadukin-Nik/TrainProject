@@ -19,18 +19,15 @@ public abstract class EnemyProvider extends EntityProvider {
     protected PlayScreen screen;
     protected Body b2body;
     protected Vector2 velocity;
-
-    protected EntityData enemyData;
-
     protected List<EntityProvider> enemies;
     protected PlayerProvider playerProvider;
 
 
     public EnemyProvider(PlayScreen screen, EntityData enemyData, Vector2 position){
-        super(enemyData);
+        super();
 
         this.world = screen.getWorld();
-        this.enemyData = enemyData;
+        this.entityData = enemyData;
         this.screen = screen;
 
         setPosition(position.x, position.y);
