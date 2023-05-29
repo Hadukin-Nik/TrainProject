@@ -90,7 +90,7 @@ public class Hud implements Disposable {
         stage.addActor(healthBar);
     }
     public void createStamina(){
-        endurance  = new Stamina(120, 10);
+        endurance  = new Stamina(120, 10, playerData);
         endurance.setPosition(10, Gdx.graphics.getHeight() - 40);
         endurance.setValue(endurance.getValue() - 1);
         stage.addActor(endurance);

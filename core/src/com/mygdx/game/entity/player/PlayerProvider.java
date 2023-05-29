@@ -116,16 +116,16 @@ public class PlayerProvider extends EntityProvider {
     }
 
     public void handleInput(double dt) {
+        float multi = (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && playerData.getStamina() > 0 ? 3f : 1f);
         //control our player using immediate impulses
         if(getState() != State.DEAD) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
                 jump();
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && b2body.getLinearVelocity().x <= 2)
-                b2body.applyLinearImpulse(new Vector2(0.1f, 0), b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && b2body.getLinearVelocity().x >= -2)
-                b2body.applyLinearImpulse(new Vector2(-0.1f, 0), b2body.getWorldCenter(), true);
-
-            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && timerToShoot == 0) {
+            if (Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= 2)
+                b2body.applyLinearImpulse(new Vector2(0.1f * multi, 0), b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -2)
+                b2body.applyLinearImpulse(new Vector2(-0.1f * multi, 0), b2body.getWorldCenter(), true);
+            if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && timerToShoot == 0) {
                 timerToShoot = 1;
 
                 float x = runningRight ? 1 : -1;
@@ -136,6 +136,15 @@ public class PlayerProvider extends EntityProvider {
 
                 BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, 0.4, 1.0, 1.0), dir.nor(), Masks.ENEMY_BIT);
                 screen.addToUpdate(bullet);
+            }
+            if (multi == 3f){
+                previousState = currentState;
+                currentState = State.RUNNING;
+            }
+            if (currentState == State.RUNNING && (b2body.getLinearVelocity().x > 1 || b2body.getLinearVelocity().x < - 1)){
+                playerData.decreaseStamina(0.2f);
+            } else {
+                playerData.addStamina(0.1f);
             }
         }
     }
