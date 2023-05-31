@@ -15,15 +15,14 @@ import com.mygdx.game.entity.EntityData;
 import com.mygdx.game.entity.EntityProvider;
 
 public class BulletProvider extends EntityProvider {
-    private BulletData bulletData;
     private TextureRegion bulletInFly;
     private Vector2 move;
 
     public BulletProvider(World world, Vector2 location, BulletData data, Vector2 move, short colliableWith){
-        super(data);
+        super();
         this.move = move;
         this.world = world;
-        this.bulletData = data;
+        entityData = data;
         //initial state
         stateTimer = 0;
         currentState = State.RUNNING;
@@ -31,7 +30,7 @@ public class BulletProvider extends EntityProvider {
 
 
         //initial texture
-        setBounds(location.x, location.y, bulletData.getSize().x / Constants.PPM, bulletData.getSize().x / Constants.PPM);
+        setBounds(location.x, location.y, data.getSize().x / Constants.PPM, data.getSize().x / Constants.PPM);
         bulletInFly = new TextureRegion(new Texture(Constants.PATH_TO_STANDART_IMAGE), 16, 16);
 
         setRegion(bulletInFly);
@@ -52,7 +51,7 @@ public class BulletProvider extends EntityProvider {
         fdef.isSensor = true;
 
         CircleShape shape = new CircleShape();
-        shape.setRadius((float) (bulletData.getRadius() / Constants.PPM));
+        shape.setRadius((float) (((BulletData)entityData).getRadius() / Constants.PPM));
         fdef.filter.categoryBits = Masks.BULLET_BIT;
         fdef.filter.maskBits = (short) (Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.BRICK_BIT | colliableWith);
 
@@ -83,14 +82,14 @@ public class BulletProvider extends EntityProvider {
             setToDestroy = false;
         }
 
-        if(stateTimer > bulletData.getDeathTimer()) {
+        if(stateTimer > ((BulletData)entityData).getDeathTimer()) {
             setToDestroy = true;
         }
     }
 
     public void damage(EntityData entityData) {
         if(currentState == State.DEAD) return;
-        entityData.decreaseHP(bulletData.damage());
+        entityData.decreaseHP(((BulletData)this.entityData).damage());
         setToDestroy = true;
         stateTimer = 0;
     }

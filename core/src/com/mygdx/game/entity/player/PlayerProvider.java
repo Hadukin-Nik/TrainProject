@@ -120,7 +120,7 @@ public class PlayerProvider extends EntityProvider {
     }
 
     public void handleInput(double dt) {
-        float multi = (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && playerData.getStamina() > 0 ? 3f : 1f);
+        float multi = (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && ((PlayerData) entityData).getStamina() > 0 ? 3f : 1f);
         //control our player using immediate impulses
         if(getState() != State.DEAD) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
@@ -146,9 +146,9 @@ public class PlayerProvider extends EntityProvider {
                 currentState = State.RUNNING;
             }
             if (currentState == State.RUNNING && (b2body.getLinearVelocity().x > 1 || b2body.getLinearVelocity().x < - 1)){
-                playerData.decreaseStamina(0.2f);
+                ((PlayerData) entityData).decreaseStamina(0.2f);
             } else {
-                playerData.addStamina(0.1f);
+                ((PlayerData) entityData).addStamina(0.1f);
             }
         }
     }
