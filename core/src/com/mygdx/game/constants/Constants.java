@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Constants {
     public static final float EPS = 0.0001F;
 
-    public static final float SPEED_STANDART = 1.0F;
+    public static final float SPEED_STANDART = 0.05F;
     public static final float HP_STANDART = 10;
     public static final float BULLET_DEATH_TIMER = 1.5f;
     public static final float PPM = 100;

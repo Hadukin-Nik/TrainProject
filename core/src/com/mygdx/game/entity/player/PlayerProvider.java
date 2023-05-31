@@ -19,6 +19,7 @@ import com.mygdx.game.screen.PlayScreen;
 
 import java.util.Scanner;
 
+
 /**
  *
  */
@@ -97,7 +98,7 @@ public class PlayerProvider extends EntityProvider {
 
     public void jump(){
         if ( currentState != State.JUMPING ) {
-            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0, (float) (entityData.getSpeed() * 50)), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }
@@ -126,9 +127,9 @@ public class PlayerProvider extends EntityProvider {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
                 jump();
             if (Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= 2)
-                b2body.applyLinearImpulse(new Vector2(0.1f * multi, 0), b2body.getWorldCenter(), true);
+                b2body.applyLinearImpulse(new Vector2((float) (entityData.getSpeed() * multi), 0), b2body.getWorldCenter(), true);
             if (Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -2)
-                b2body.applyLinearImpulse(new Vector2(-0.1f * multi, 0), b2body.getWorldCenter(), true);
+                b2body.applyLinearImpulse(new Vector2((float) (-entityData.getSpeed() * multi), 0), b2body.getWorldCenter(), true);
             if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && timerToShoot == 0) {
                 timerToShoot = 1;
 

@@ -28,6 +28,7 @@ import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 import com.mygdx.game.scenes.Hud;
 import com.mygdx.game.tools.B2WorldCreator;
+import com.mygdx.game.tools.FPScutter;
 import com.mygdx.game.tools.WorldContactListener;
 
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Hud hud;
+
+    private FPScutter fpsCutter;
 
 
     //Tiled map variables
@@ -67,7 +70,9 @@ public class PlayScreen implements Screen {
     private List<EntityProvider> entitiesToUpdate;
 
     public PlayScreen(TrainGame trainGame){
-        //atlas = new TextureAtlas("Mario_and_Enemies.pack");
+
+        fpsCutter = new FPScutter(30);
+        //atlas = new TextureAtlas(".pack");
 
         //create cam used to follow player through cam world
         gamecam = new OrthographicCamera();
@@ -155,6 +160,8 @@ public class PlayScreen implements Screen {
     }
     @Override
     public void render(float delta) {
+        if(!fpsCutter.isReadyToUpdate(delta)) return;
+
         //separate our update logic from render
         update(delta);
 
