@@ -5,10 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 public class Constants {
     public static final float EPS = 0.0001F;
 
-    public static final float SPEED_STANDART = 0.05F;
+    public static final float SPEED_STANDART = 0.5f;
     public static final float HP_STANDART = 10;
     public static final float BULLET_DEATH_TIMER = 1.5f;
-    public static final float PPM = 100;
+    public static final float PPM = 85;
 
     public static final float dampingPerSecond = 0.5f;
 
@@ -20,6 +20,9 @@ public class Constants {
     public static final Vector2 JUMP_DIRECTION_STANDART = new Vector2(2, 3);
 
 
-    public static final String PATH_TO_STANDART_IMAGE = "StandartCircle.png";
+    public static final String PATH_TO_STANDART_IMAGE = "pngs/StandartCircle.png";
+    public static final String PATH_TO_ENTITIES = "pngs/entities";
+
+
     public static final String PATH_TO_STANDART_SOUNDSAMPLE = "drop.wav";
 }
