@@ -54,7 +54,7 @@ public class BulletProvider extends EntityProvider {
         shape.setRadius((float) (((BulletData)entityData).getRadius() / Constants.PPM));
         fdef.filter.categoryBits = Masks.BULLET_BIT;
         fdef.filter.maskBits = (short) (Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.BRICK_BIT | colliableWith);
-
+        move = new Vector2((float) (move.x * entityData.getSpeed()), (float) (move.y * entityData.getSpeed()));
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
@@ -66,7 +66,7 @@ public class BulletProvider extends EntityProvider {
 
     public void moveByDirection(double time) {
 
-        b2body.setLinearVelocity(move);
+        b2body.applyLinearImpulse(move, b2body.getWorldCenter(), true);
     }
 
     public void update(double time){

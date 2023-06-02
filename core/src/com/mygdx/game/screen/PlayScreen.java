@@ -64,10 +64,9 @@ public class PlayScreen implements Screen {
 
     //sprites
     private PlayerProvider player;
-    private EnemyProvider enemy;
-    private EnemyProvider enemy2;
-
     private List<EntityProvider> entitiesToUpdate;
+
+    private boolean worldCreated;
 
     public PlayScreen(TrainGame trainGame){
 
@@ -85,8 +84,8 @@ public class PlayScreen implements Screen {
 
         //Load our map and setup our map renderer
         maploader = new TmxMapLoader();
-        map = maploader.load("level1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, (0.25F  / Constants.PPM));
+        map = maploader.load("TutorialTemple.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, (1 / Constants.PPM));
 
         //initially set our gamecam to be centered correctly at the start of of map
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -96,23 +95,11 @@ public class PlayScreen implements Screen {
         //allows for debug lines of our box2d world.
         b2dr = new Box2DDebugRenderer();
 
-        creator = new B2WorldCreator(this);
-
-
-        //create player in our game world
-        player = new PlayerProvider(new Vector2(32, 32), new PlayerData(), this);
-
-        enemy = new BugProvider(this, new EnemyData(),new Vector2(128, 32), 4, 1, 1);
-        enemy.addEnemy(player);
-
         entitiesToUpdate = new ArrayList<>();
-        entitiesToUpdate.add(player);
-        entitiesToUpdate.add(enemy);
 
         world.setContactListener(new WorldContactListener());
 
-        //create our game HUD for scores/timers/level info
-        hud = new Hud(game.batch, (PlayerData) player.getEntityData());
+
     }
 
 
@@ -135,7 +122,7 @@ public class PlayScreen implements Screen {
             entitiesToUpdate.get(i).update(dt);
         }
 
-        System.out.println("entities:" + entitiesToUpdate.size());
+        //System.out.println("entities:" + entitiesToUpdate.size());
 
         hud.update();
 
@@ -144,9 +131,9 @@ public class PlayScreen implements Screen {
             gamecam.position.x = player.getPosition().x;
         }
 
-        /*if(player.getState() != PlayerProvider.State.DEAD) {
-            gamecam.position.y = player.b2body.getPosition().y;
-        }*/
+        if(player.getState() != PlayerProvider.State.DEAD) {
+            gamecam.position.y = (float) (player.getPosition().y + 0.007 * Constants.PPM);
+        }
 
         //update our gamecam with correct coordinates after changes
         gamecam.update();
@@ -160,6 +147,15 @@ public class PlayScreen implements Screen {
     }
     @Override
     public void render(float delta) {
+        //Creating a world if it is not created
+        if(!worldCreated) {
+            worldCreated = true;
+            creator = new B2WorldCreator(this);
+            player = creator.getPlayer();
+
+            //create our game HUD for scores/timers/level info
+            hud = new Hud(game.batch, (PlayerData) player.getEntityData());
+        }
         if(!fpsCutter.isReadyToUpdate(delta)) return;
 
         //separate our update logic from render

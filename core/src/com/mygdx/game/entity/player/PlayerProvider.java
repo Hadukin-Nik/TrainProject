@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
 import com.mygdx.game.effects.EffectManager;
@@ -17,6 +18,8 @@ import com.mygdx.game.entity.bullet.BulletData;
 import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.screen.PlayScreen;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -26,8 +29,9 @@ import java.util.Scanner;
 public class PlayerProvider extends EntityProvider {
     protected boolean runningRight;
 
-    private TextureRegion playerStand;
-    private TextureRegion playerJump;
+    private Animation playerWalk;
+    private Animation playerStand;
+    private Animation playerJump;
 
     private Animation playerRun;
 
@@ -50,44 +54,46 @@ public class PlayerProvider extends EntityProvider {
         stateTimer = 0;
         runningRight = true;
 
-        /*Array<TextureRegion> frames = new Array<TextureRegion>();
 
         //get run animation frames and add them to playerRun Animation
-        for(int i = 1; i < 4; i++)
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"), i * 16, 0, 16, 16));
-        playerRun = new Animation(0.1f, frames);
+        playerRun = new Animation(0.10f, getAnimation(Constants.PATH_TO_ENTITIES + "/protagonist/pngs/run.png", 6, 72));
 
-        frames.clear();
 
         //get jump animation frames and add them to playerJump Animation
-        playerJump = new TextureRegion(screen.getAtlas().findRegion("player"), 80, 0, 16, 16);
+        playerJump = new Animation(0.10f, getAnimation(Constants.PATH_TO_ENTITIES + "/protagonist/pngs/jump.png", 7, 100));
 
-        //create texture region for player standing
-         */
+        //create animation frames for player standing
+        playerStand = new Animation(0.25f, getAnimation(Constants.PATH_TO_ENTITIES + "/protagonist/pngs/idle.png", 4, 72));
 
-        playerStand = new TextureRegion(new Texture(Constants.PATH_TO_STANDART_IMAGE), 16, 16);
-
+        //get walk animation frames
+        playerWalk = new Animation(0.15f, getAnimation(Constants.PATH_TO_ENTITIES + "/protagonist/pngs/walk.png", 6, 72));
 
 
         //define mario in Box2d
         definePlayer(location);
 
-        //set initial values for players location, width and height. And initial frame as marioStand.
-        setBounds(location.x, location.y, 16 / Constants.PPM, 16 / Constants.PPM);
-        setRegion(playerStand);
+        //set initial values for players location, width and height. And initial frame as playerStand.
+        setBounds(location.x, location.y, 72 / Constants.PPM, 72 / Constants.PPM);
     }
+
+    private Array<TextureRegion> getAnimation(String filePath, int count, int height) {
+        Array<TextureRegion> frames = new Array<>();
+        for(int i = 0; i < count; i++)
+            frames.add(new TextureRegion(new Texture(filePath), i * 72, 0, 72, height));
+        return frames;
+    }
+
     /**
      * @param time delta time of screen update
      */
     public void update(double time) {
+        currentState = getState();
         timerToShoot = timerToShoot > 0 ? (float) (timerToShoot - time) : 0;
         handleInput(time);
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        currentState = getState();
-        setRegion(getFrame(time));
 
         //update sprite with the correct frame
-        //setRegion(getFrame(time));
+        setRegion(getFrame(time));
     }
 
     @Override
@@ -98,21 +104,21 @@ public class PlayerProvider extends EntityProvider {
 
     public void jump(){
         if ( currentState != State.JUMPING ) {
-            b2body.applyLinearImpulse(new Vector2(0, (float) (entityData.getSpeed() * 50)), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0, (float) (entityData.getSpeed() * 10)), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }
 
     public void definePlayer(Vector2 location){
         BodyDef bdef = new BodyDef();
-        bdef.position.set(location.x / Constants.PPM, location.y / Constants.PPM);
+        bdef.position.set(location.x, location.y);
 
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(8 / Constants.PPM);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(11 / Constants.PPM, 29 / Constants.PPM);
         fdef.filter.categoryBits = Masks.PLAYER_BIT;
         fdef.filter.maskBits = Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.ENEMY_BIT | Masks.BULLET_BIT;
 
@@ -121,15 +127,30 @@ public class PlayerProvider extends EntityProvider {
     }
 
     public void handleInput(double dt) {
-        float multi = (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && ((PlayerData) entityData).getStamina() > 0 ? 3f : 1f);
+        float multi = 1f;
+        if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && ((PlayerData) entityData).getStamina() > 1) {
+            currentState = State.RUNNING;
+            multi = 1.5f;
+        } else
+        if(previousState == State.RUNNING && stateTimer < 0.01) {
+            currentState = State.POSTRUNNING;
+            multi = 1.5f;
+        }
+
         //control our player using immediate impulses
+        Vector2 movedir = b2body.getLinearVelocity();
         if(getState() != State.DEAD) {
+            boolean ismove = false;
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
                 jump();
-            if (Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= 2)
-                b2body.applyLinearImpulse(new Vector2((float) (entityData.getSpeed() * multi), 0), b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -2)
-                b2body.applyLinearImpulse(new Vector2((float) (-entityData.getSpeed() * multi), 0), b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= 2) {
+                b2body.setLinearVelocity(new Vector2((float) (entityData.getSpeed() * multi), movedir.y)); //, b2body.getWorldCenter(), true
+                ismove = true;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -2) {
+                b2body.setLinearVelocity(new Vector2((float) (-entityData.getSpeed() * multi), movedir.y)); //, b2body.getWorldCenter(), true
+                ismove = true;
+            }
             if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && timerToShoot == 0) {
                 timerToShoot = 1;
 
@@ -139,16 +160,15 @@ public class PlayerProvider extends EntityProvider {
 
                 Vector2 loc = new Vector2(b2body.getPosition().x * Constants.PPM, b2body.getPosition().y * Constants.PPM);
 
-                BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, 0.4, 1.0, 1.0), dir.nor(), Masks.ENEMY_BIT);
+                BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, Constants.SPEED_STANDART * 10, 1.0, 1.0), dir.nor(), Masks.ENEMY_BIT);
                 screen.addToUpdate(bullet);
             }
-            if (multi == 3f){
-                previousState = currentState;
-                currentState = State.RUNNING;
-            }
-            if (currentState == State.RUNNING && (b2body.getLinearVelocity().x > 1 || b2body.getLinearVelocity().x < - 1)){
+
+            if ((currentState == State.RUNNING || currentState == State.POSTRUNNING) && ismove && ((PlayerData) entityData).getStamina() > 0){
                 ((PlayerData) entityData).decreaseStamina(0.2f);
             } else {
+                currentState = getState();
+
                 ((PlayerData) entityData).addStamina(0.1f);
             }
         }
@@ -160,26 +180,32 @@ public class PlayerProvider extends EntityProvider {
 
     //getCurrentFrameDependingOnItsState(jump, standing, etc)
     public TextureRegion getFrame(double dt){
-        currentState = getState();
-
-        TextureRegion region = playerStand;
-
-        /*switch(currentState){
+        TextureRegion region = null;
+        Vector2 pos = new Vector2(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        switch(currentState){
             case DEAD:
                 break;
-            case JUMPING:
-                //region = playerJump;
-                break;
+            case POSTRUNNING:
             case RUNNING:
-                //region = (TextureRegion) playerRun.getKeyFrame((float) stateTimer, true);
+                setBounds(pos.x, pos.y, 72 / Constants.PPM, 72 / Constants.PPM);
+                region = (TextureRegion) playerRun.getKeyFrame((float) stateTimer, true);
                 break;
             case FALLING:
+            case JUMPING:
+                setBounds(pos.x, pos.y, 72 / Constants.PPM, 100 / Constants.PPM);
+                region = (TextureRegion) playerJump.getKeyFrame((float) stateTimer, false);
+                break;
+            case WALKING:
+                setBounds(pos.x, pos.y, 72 / Constants.PPM, 72 / Constants.PPM);
+                region = (TextureRegion) playerWalk.getKeyFrame((float) stateTimer, true);
+                break;
             case STANDING:
             default:
-                //region = playerStand;
+                setBounds(pos.x, pos.y, 72 / Constants.PPM, 72 / Constants.PPM);
+                region = (TextureRegion) playerStand.getKeyFrame((float) stateTimer, true);
                 break;
         }
-        */
+
         if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
             region.flip(true, false);
             runningRight = false;
@@ -191,9 +217,13 @@ public class PlayerProvider extends EntityProvider {
 
         //if the current state is the same as the previous state increase the state timer.
         //otherwise the state has changed and we need to reset timer.
+        if(currentState != State.FALLING && currentState != State.POSTRUNNING)
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         //update previous state
+        if(currentState != State.POSTRUNNING)
         previousState = currentState;
+
+
         //return our final adjusted frame
         return region;
 
