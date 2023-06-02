@@ -1,7 +1,6 @@
 package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,18 +15,17 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.TrainGame;
 import com.mygdx.game.constants.Constants;
-import com.mygdx.game.entity.EntityData;
 import com.mygdx.game.entity.EntityProvider;
 
-import com.mygdx.game.entity.bullet.BulletData;
-import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.entity.enemy.EnemyData;
 import com.mygdx.game.entity.enemy.EnemyProvider;
+import com.mygdx.game.entity.enemy.SlimeProvider.SlimeProvider;
 import com.mygdx.game.entity.enemy.bug.BugProvider;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 import com.mygdx.game.scenes.Hud;
 import com.mygdx.game.tools.B2WorldCreator;
+import com.mygdx.game.tools.FPScutter;
 import com.mygdx.game.tools.WorldContactListener;
 
 import java.util.ArrayList;
@@ -45,6 +43,8 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Hud hud;
+
+    private FPScutter fpsCutter;
 
 
     //Tiled map variables
@@ -67,7 +67,9 @@ public class PlayScreen implements Screen {
     private List<EntityProvider> entitiesToUpdate;
 
     public PlayScreen(TrainGame trainGame){
-        //atlas = new TextureAtlas("Mario_and_Enemies.pack");
+
+        fpsCutter = new FPScutter(30);
+        //atlas = new TextureAtlas(".pack");
 
         //create cam used to follow player through cam world
         gamecam = new OrthographicCamera();
@@ -100,9 +102,13 @@ public class PlayScreen implements Screen {
         enemy = new BugProvider(this, new EnemyData(),new Vector2(128, 32), 4, 1, 1);
         enemy.addEnemy(player);
 
+        enemy2 = new SlimeProvider(this, new EnemyData(), new Vector2(200,32) );
+        enemy2.addEnemy(player);
+
         entitiesToUpdate = new ArrayList<>();
         entitiesToUpdate.add(player);
         entitiesToUpdate.add(enemy);
+        entitiesToUpdate.add(enemy2);
 
         world.setContactListener(new WorldContactListener());
 
@@ -155,6 +161,8 @@ public class PlayScreen implements Screen {
     }
     @Override
     public void render(float delta) {
+        if(!fpsCutter.isReadyToUpdate(delta)) return;
+
         //separate our update logic from render
         update(delta);
 
