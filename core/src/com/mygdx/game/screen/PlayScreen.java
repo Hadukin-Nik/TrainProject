@@ -1,7 +1,6 @@
 package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,13 +15,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.TrainGame;
 import com.mygdx.game.constants.Constants;
-import com.mygdx.game.entity.EntityData;
 import com.mygdx.game.entity.EntityProvider;
 
-import com.mygdx.game.entity.bullet.BulletData;
-import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.entity.enemy.EnemyData;
 import com.mygdx.game.entity.enemy.EnemyProvider;
+import com.mygdx.game.entity.enemy.SlimeProvider.SlimeProvider;
 import com.mygdx.game.entity.enemy.bug.BugProvider;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
