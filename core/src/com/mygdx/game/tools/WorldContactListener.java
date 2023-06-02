@@ -1,12 +1,9 @@
 package com.mygdx.game.tools;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.constants.Constants;
 import com.mygdx.game.constants.Masks;
-import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.entity.enemy.EnemyProvider;
-import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 
 public class WorldContactListener implements ContactListener {
@@ -43,6 +40,12 @@ public class WorldContactListener implements ContactListener {
                 else {
                     ((BulletProvider)fixB.getUserData()).damage(((EnemyProvider) fixA.getUserData()).getEntityData());
                 }
+                break;
+            case Masks.ENEMY_BIT | Masks.OBJECT_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.ENEMY_BIT)
+                    ((EnemyProvider)fixA.getUserData()).reverseVelocity(true, false);
+                else
+                    ((EnemyProvider)fixB.getUserData()).reverseVelocity(true, false);
                 break;
         }
     }
