@@ -15,6 +15,7 @@ public class PlayerData extends EntityData {
 
     public PlayerData(double speed, double hp, float maxStamina, float stamina) {
         super(speed, hp);
+        this.maxHP = hp;
         this.maxStamina = maxStamina;
         this.stamina = stamina;
     }

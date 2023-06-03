@@ -18,10 +18,6 @@ import com.mygdx.game.entity.bullet.BulletData;
 import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.screen.PlayScreen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 
 /**
  *
@@ -45,6 +41,7 @@ public class PlayerProvider extends EntityProvider {
         super();
 
         effectManager = new EffectManager(data);
+        screen.addToUpdate(effectManager);
         entityData = data;
 
         this.screen = screen;
@@ -87,7 +84,7 @@ public class PlayerProvider extends EntityProvider {
      * @param time delta time of screen update
      */
     public void update(double time) {
-        currentState = getState();
+        currentState = updateState();
         timerToShoot = timerToShoot > 0 ? (float) (timerToShoot - time) : 0;
         handleInput(time);
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
@@ -104,7 +101,7 @@ public class PlayerProvider extends EntityProvider {
 
     public void jump(){
         if ( currentState != State.JUMPING ) {
-            b2body.applyLinearImpulse(new Vector2(0, (float) (entityData.getSpeed() * 10)), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0, (float) (entityData.getSpeed() * 7)), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }
@@ -130,25 +127,25 @@ public class PlayerProvider extends EntityProvider {
         float multi = 1f;
         if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && ((PlayerData) entityData).getStamina() > 1) {
             currentState = State.RUNNING;
-            multi = 1.5f;
+            multi = 3f;
         } else
         if(previousState == State.RUNNING && stateTimer < 0.01) {
             currentState = State.POSTRUNNING;
-            multi = 1.5f;
+            multi = 3f;
         }
 
         //control our player using immediate impulses
         Vector2 movedir = b2body.getLinearVelocity();
-        if(getState() != State.DEAD) {
+        if(updateState() != State.DEAD) {
             boolean ismove = false;
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
                 jump();
             if (Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= 2) {
-                b2body.setLinearVelocity(new Vector2((float) (entityData.getSpeed() * multi), movedir.y)); //, b2body.getWorldCenter(), true
+                b2body.setLinearVelocity(new Vector2((float) (entityData.getSpeed() * multi), movedir.y));
                 ismove = true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -2) {
-                b2body.setLinearVelocity(new Vector2((float) (-entityData.getSpeed() * multi), movedir.y)); //, b2body.getWorldCenter(), true
+                b2body.setLinearVelocity(new Vector2((float) (-entityData.getSpeed() * multi), movedir.y));
                 ismove = true;
             }
             if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && timerToShoot == 0) {
@@ -167,7 +164,7 @@ public class PlayerProvider extends EntityProvider {
             if ((currentState == State.RUNNING || currentState == State.POSTRUNNING) && ismove && ((PlayerData) entityData).getStamina() > 0){
                 ((PlayerData) entityData).decreaseStamina(0.2f);
             } else {
-                currentState = getState();
+                currentState = updateState();
 
                 ((PlayerData) entityData).addStamina(0.1f);
             }
@@ -187,24 +184,22 @@ public class PlayerProvider extends EntityProvider {
                 break;
             case POSTRUNNING:
             case RUNNING:
-                setBounds(pos.x, pos.y, 72 / Constants.PPM, 72 / Constants.PPM);
                 region = (TextureRegion) playerRun.getKeyFrame((float) stateTimer, true);
                 break;
             case FALLING:
             case JUMPING:
-                setBounds(pos.x, pos.y, 72 / Constants.PPM, 100 / Constants.PPM);
                 region = (TextureRegion) playerJump.getKeyFrame((float) stateTimer, false);
                 break;
             case WALKING:
-                setBounds(pos.x, pos.y, 72 / Constants.PPM, 72 / Constants.PPM);
                 region = (TextureRegion) playerWalk.getKeyFrame((float) stateTimer, true);
                 break;
             case STANDING:
             default:
-                setBounds(pos.x, pos.y, 72 / Constants.PPM, 72 / Constants.PPM);
                 region = (TextureRegion) playerStand.getKeyFrame((float) stateTimer, true);
+
                 break;
         }
+        setBounds(pos.x, pos.y, region.getRegionWidth() / Constants.PPM, region.getRegionHeight() / Constants.PPM);
 
         if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
             region.flip(true, false);

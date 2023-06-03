@@ -1,10 +1,12 @@
 package com.mygdx.game.effects;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
+import com.mygdx.game.interfaces.IUpdatable;
 
 import java.util.ArrayList;
 
-public class EffectManager {
+public class EffectManager implements IUpdatable {
     private ArrayList<Effect> effects;
     private PlayerData player;
 
@@ -31,6 +33,11 @@ public class EffectManager {
         for (Effect effect: toRemove) {
             effects.remove(effect);
         }
+    }
+
+    @Override
+    public void draw(Batch batch) {
+
     }
 
     public ArrayList<Effect> GetEffects()

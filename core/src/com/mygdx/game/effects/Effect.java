@@ -12,6 +12,7 @@ public abstract class Effect {
     {
         this.amount = amount;
         this.duration = duration;
+        this.playerData = playerData;
     }
     public abstract void ApplayEffect();
     public abstract void EndEffect();

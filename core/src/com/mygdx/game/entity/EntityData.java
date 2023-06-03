@@ -13,12 +13,13 @@ public abstract class EntityData {
     public EntityData(double speed, double hp) {
         this.speed = speed;
         this.hp = hp;
-        maxHP = hp;
+        this.maxHP = hp;
     }
 
     public EntityData() {
         this.speed = Constants.SPEED_STANDART;
         this.hp = Constants.HP_STANDART;
+        this.maxHP = hp;
     }
 
     public boolean isAlive() {
@@ -30,6 +31,9 @@ public abstract class EntityData {
         return hp;
     }
 
+    public double getMaxHp() {
+        return maxHP;
+    }
     public void decreaseHP(double damage) {
         hp -= damage;
     }

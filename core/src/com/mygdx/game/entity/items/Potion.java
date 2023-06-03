@@ -13,42 +13,46 @@ import com.mygdx.game.effects.EffectManager;
 import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.entity.player.PlayerProvider;
 
+import java.awt.*;
+
 public class Potion extends EntityProvider {
     private Effect effectOfPotion;
 
     private boolean setToDestroy;
 
-    public Potion(Effect effectOfPotion, World world, Vector2 position) {
+    public Potion(Effect effectOfPotion, World world, Vector2 position, Vector2 size, Vector2 box2d, Texture texture) {
         super();
+        this.world = world;
         this.effectOfPotion = effectOfPotion;
-
-        setBounds(position.x, position.y, 8 / Constants.PPM, 8 / Constants.PPM);
 
         setToDestroy = false;
 
-        setRegion(new TextureRegion(new Texture(Constants.PATH_TO_STANDART_IMAGE), 16, 16));
+        setRegion(new TextureRegion(texture, (int) (size.x), (int) size.y));
 
         currentState = State.STANDING;
         //define a potion body in a world
 
         BodyDef bdef = new BodyDef();
-        bdef.position.set(position.x / Constants.PPM, position.y / Constants.PPM);
+        bdef.position.set(position.x + size.x / 4 / Constants.PPM, position.y + size.y / 4 / Constants.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
-        Body b2body = world.createBody(bdef);
+        b2body = world.createBody(bdef);
         b2body.setGravityScale(0);
-
         FixtureDef fdef = new FixtureDef();
         fdef.isSensor = true;
 
-        CircleShape shape = new CircleShape();
-        shape.setRadius(8 / Constants.PPM);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(box2d.x / 4 / Constants.PPM, box2d.y / 4 / Constants.PPM);
         fdef.filter.categoryBits = Masks.OBJECT_BIT;
-        fdef.filter.maskBits = (short) (Masks.GROUND_BIT | Masks.BRICK_BIT | Masks.PLAYER_BIT);
+        fdef.filter.maskBits = (Masks.GROUND_BIT | Masks.BRICK_BIT | Masks.PLAYER_BIT);
 
         fdef.shape = shape;
-        b2body.createFixture(fdef).setUserData(this);
-    }
 
+        b2body.createFixture(fdef).setUserData(this);
+
+        //set texture
+        setBounds(position.x, position.y, size.x / 2 / Constants.PPM, size.y / 2 / Constants.PPM);
+
+    }
     public void collision(PlayerProvider playerProvider) {
         if(setToDestroy || currentState == State.DEAD) return;
 

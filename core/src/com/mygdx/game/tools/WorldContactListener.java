@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.constants.Masks;
 import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.entity.enemy.EnemyProvider;
+import com.mygdx.game.entity.items.Potion;
 import com.mygdx.game.entity.player.PlayerProvider;
 
 public class WorldContactListener implements ContactListener {
@@ -41,11 +42,18 @@ public class WorldContactListener implements ContactListener {
                     ((BulletProvider)fixB.getUserData()).damage(((EnemyProvider) fixA.getUserData()).getEntityData());
                 }
                 break;
-            case Masks.ENEMY_BIT | Masks.OBJECT_BIT:
-                if(fixA.getFilterData().categoryBits == Masks.ENEMY_BIT)
-                    ((EnemyProvider)fixA.getUserData()).reverseVelocity(true, false);
+            case Masks.PLAYER_BIT | Masks.OBJECT_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.OBJECT_BIT)
+                    ((Potion)fixA.getUserData()).collision((PlayerProvider) fixB.getUserData());
                 else
-                    ((EnemyProvider)fixB.getUserData()).reverseVelocity(true, false);
+                    ((Potion)fixB.getUserData()).collision(((PlayerProvider) fixA.getUserData()));
+                break;
+            case Masks.ENEMY_BIT | Masks.OBJECT_BIT:
+            case Masks.ENEMY_BIT | Masks.GROUND_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.ENEMY_BIT)
+                    ((EnemyProvider)fixA.getUserData()).collisionWithoutDamage();
+                else
+                    ((EnemyProvider)fixB.getUserData()).collisionWithoutDamage();
                 break;
         }
     }

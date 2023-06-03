@@ -17,12 +17,9 @@ import com.mygdx.game.TrainGame;
 import com.mygdx.game.constants.Constants;
 import com.mygdx.game.entity.EntityProvider;
 
-import com.mygdx.game.entity.enemy.EnemyData;
-import com.mygdx.game.entity.enemy.EnemyProvider;
-import com.mygdx.game.entity.enemy.SlimeProvider.SlimeProvider;
-import com.mygdx.game.entity.enemy.bug.BugProvider;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
+import com.mygdx.game.interfaces.IUpdatable;
 import com.mygdx.game.scenes.Hud;
 import com.mygdx.game.tools.B2WorldCreator;
 import com.mygdx.game.tools.FPScutter;
@@ -61,7 +58,7 @@ public class PlayScreen implements Screen {
 
     //sprites
     private PlayerProvider player;
-    private List<EntityProvider> entitiesToUpdate;
+    private List<IUpdatable> entitiesToUpdate;
 
     private boolean worldCreated;
 
@@ -95,8 +92,6 @@ public class PlayScreen implements Screen {
         entitiesToUpdate = new ArrayList<>();
 
         world.setContactListener(new WorldContactListener());
-
-
     }
 
 
@@ -124,11 +119,11 @@ public class PlayScreen implements Screen {
         hud.update();
 
         //attach our gamecam to our players.x coordinate
-        if(player.getState() != PlayerProvider.State.DEAD) {
+        if(player.getCurrentState() != PlayerProvider.State.DEAD) {
             gamecam.position.x = player.getPosition().x;
         }
 
-        if(player.getState() != PlayerProvider.State.DEAD) {
+        if(player.getCurrentState() != PlayerProvider.State.DEAD) {
             gamecam.position.y = (float) (player.getPosition().y + 0.007 * Constants.PPM);
         }
 
@@ -139,7 +134,7 @@ public class PlayScreen implements Screen {
 
     }
 
-    public void addToUpdate(EntityProvider newEntity) {
+    public void addToUpdate(IUpdatable newEntity) {
         entitiesToUpdate.add(newEntity);
     }
     @Override
@@ -149,6 +144,9 @@ public class PlayScreen implements Screen {
             worldCreated = true;
             creator = new B2WorldCreator(this);
             player = creator.getPlayer();
+//            BugProvider bug = new BugProvider(this, new EnemyData(10, 1, 1,1,1), new Vector2(player.getPosition().x + 1, player.getPosition().y), 10);
+//            entitiesToUpdate.add(bug);
+//            bug.addEnemy(player);
 
             //create our game HUD for scores/timers/level info
             hud = new Hud(game.batch, (PlayerData) player.getEntityData());
@@ -172,7 +170,7 @@ public class PlayScreen implements Screen {
         game.batch.begin();
 
         //Enemies, Items, Piggies... Trains?
-        for(EntityProvider i : entitiesToUpdate) {
+        for(IUpdatable i : entitiesToUpdate) {
             i.draw(game.batch);
         }
         game.batch.end();

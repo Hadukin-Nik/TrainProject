@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="100" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="105">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="100" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="109">
  <tileset firstgid="1" source="tiles.tsx"/>
  <layer id="2" name="Background" width="100" height="13">
   <data encoding="csv">
@@ -112,11 +112,12 @@
   <object id="43" x="2496" y="320" width="32" height="32"/>
   <object id="44" x="2656" y="320" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="7" name="Elevators" visible="0">
-  <object id="45" x="288" y="160" width="64" height="192"/>
-  <object id="46" x="576" y="160" width="64" height="192"/>
-  <object id="47" x="1664" y="160" width="64" height="192"/>
-  <object id="48" x="2752" y="160" width="64" height="192"/>
+ <objectgroup id="7" name="Elevators">
+  <object id="45" x="288" y="144" width="64" height="192"/>
+  <object id="46" x="576" y="144" width="64" height="192"/>
+  <object id="47" x="1664" y="144" width="64" height="192"/>
+  <object id="48" x="2752" y="144" width="64" height="192"/>
+  <object id="106" x="128" y="288" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="8" name="Slime" visible="0">
   <object id="49" x="736" y="160" width="32" height="32"/>
@@ -147,7 +148,7 @@
   <object id="97" x="1120" y="288" width="32" height="32"/>
   <object id="98" x="416" y="288" width="32" height="64"/>
  </objectgroup>
- <objectgroup id="9" name="Dogs">
+ <objectgroup id="9" name="Dogs" visible="0">
   <object id="65" x="1920" y="160" width="32" height="32"/>
   <object id="66" x="2080" y="160" width="32" height="32"/>
   <object id="68" x="1536" y="320" width="32" height="32"/>

@@ -1,9 +1,13 @@
 package com.mygdx.game.entity.items;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.constants.Constants;
 import com.mygdx.game.effects.Effect;
 import com.mygdx.game.effects.HealingEffect;
 import com.mygdx.game.effects.StaminaRestoreEffect;
+import com.mygdx.game.entity.EntityProvider;
 import com.mygdx.game.entity.player.PlayerData;
 import com.mygdx.game.entity.player.PlayerProvider;
 import com.mygdx.game.screen.PlayScreen;
@@ -11,32 +15,23 @@ import com.mygdx.game.screen.PlayScreen;
 import java.util.Random;
 
 public class PotionFactory {
-    private PlayScreen playScreen;
-    private PlayerData playerData;
-    private Random rand;
+    private static Random rand = new Random();
 
-    public PotionFactory(PlayScreen playScreen, PlayerData playerData) {
-        this.playerData = playerData;
-        this.playScreen = playScreen;
 
-        rand = new Random();
+    public static EntityProvider createHealPotion(Vector2 position, PlayScreen playScreen, PlayerData playerData) {
+        return new Potion(new HealingEffect((float) playerData.getMaxHp(),0.1,playerData), playScreen.getWorld(), position, new Vector2(11, 32), new Vector2(11, 32), new Texture("pngs/tiles/POTION2.png"));
     }
 
-    public void createHealPotion(Vector2 position) {
-        Potion potion = new Potion(new HealingEffect(2,0.1,playerData), playScreen.getWorld(), position);
-        playScreen.addToUpdate(potion);
+    public static EntityProvider createSanityPotion(Vector2 position, PlayScreen playScreen, PlayerData playerData) {
+        return new Potion(new StaminaRestoreEffect(15,0.1,playerData), playScreen.getWorld(), position, new Vector2(11, 32), new Vector2(11, 32), new Texture("pngs/tiles/POTION1.png"));
     }
 
-    public void createSanityPotion(Vector2 position) {
-        Potion potion = new Potion(new StaminaRestoreEffect(5,0.1,playerData), playScreen.getWorld(), position);
-        playScreen.addToUpdate(potion);
-    }
-
-    public void createRandomPotion(Vector2 position) {
+    public static EntityProvider createRandomPotion(Rectangle rect, PlayScreen playScreen, PlayerData playerData) {
+        Vector2 position = new Vector2((rect.getX() + rect.getWidth() / 2) / Constants.PPM, (rect.getY() + rect.getHeight() / 2) / Constants.PPM);
         if(rand.nextBoolean()) {
-            createHealPotion(position);
+            return createHealPotion(position, playScreen, playerData);
         } else {
-            createSanityPotion(position);
+            return createSanityPotion(position, playScreen, playerData);
         }
     }
 }

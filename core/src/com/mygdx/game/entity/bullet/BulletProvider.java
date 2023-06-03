@@ -42,7 +42,7 @@ public class BulletProvider extends EntityProvider {
 
     private void defineBullet(Vector2 location, short colliableWith) {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(location.x / Constants.PPM, location.y / Constants.PPM);
+        bdef.position.set(location.x, location.y);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
         b2body.setGravityScale(0);

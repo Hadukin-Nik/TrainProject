@@ -16,7 +16,7 @@ public class HealthBar extends ProgressBar {
      * @param height of the health bar
      */
     public HealthBar(int width, int height, PlayerData playerData) {
-        super(0, 10, 1, false, new ProgressBarStyle());
+        super(0, (float) playerData.getMaxHp(), 1, false, new ProgressBarStyle());
         this.playerData = playerData;
         getStyle().background = Utils.getColoredDrawable(width, height, Color.RED);
         getStyle().knob = Utils.getColoredDrawable(0, height, Color.RED);
