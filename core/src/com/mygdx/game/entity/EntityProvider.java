@@ -38,7 +38,7 @@ public abstract class EntityProvider extends Sprite implements IUpdatable {
         else if((b2body.getLinearVelocity().y > 0 && currentState == State.JUMPING)){
             return State.JUMPING;
         }
-        else if(b2body.getLinearVelocity().y < 0 && (currentState == State.FALLING || currentState == State.JUMPING))
+        else if(b2body.getLinearVelocity().y < 0 && (currentState == State.FALLING || currentState == State.JUMPING || previousState == State.FALLING || previousState == State.JUMPING))
             return State.FALLING;
         else if(b2body.getLinearVelocity().x != 0)
             return State.WALKING;
