@@ -156,7 +156,7 @@ public class PlayerProvider extends EntityProvider {
         Vector2 movedir = b2body.getLinearVelocity();
         if(updateState() != State.DEAD) {
             boolean ismove = false;
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !(updateState() == State.JUMPING || updateState() == State.FALLING))
                 jump();
             if (Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= 2) {
                 b2body.setLinearVelocity(new Vector2((float) (entityData.getSpeed() * multi), movedir.y));

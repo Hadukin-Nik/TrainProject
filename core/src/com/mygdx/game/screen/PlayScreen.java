@@ -57,7 +57,7 @@ public class PlayScreen implements Screen {
                 game.setScreen(new LevelStarter(game, gameScreens.get(nowLevel) ,"pngs/monitors/monitor.png", this));
                 level = null;
             } else {
-                game.setScreen(new LevelStarter(game, "pngs/monitors/main menu back.png" ,this));
+                game.setScreen(new LevelStarter(game, "pngs/monitors/main menu.png" ,this));
                 nowLevel = 0;
                 level = null;
             }

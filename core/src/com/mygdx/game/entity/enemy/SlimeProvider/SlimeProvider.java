@@ -131,8 +131,7 @@ public class SlimeProvider extends EnemyProvider{
         fdef.filter.maskBits = Masks.GROUND_BIT |
                 Masks.BULLET_BIT |
                 Masks.BRICK_BIT |
-                Masks.OBJECT_BIT |
-                Masks.PLAYER_BIT;
+                Masks.OBJECT_BIT ;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
