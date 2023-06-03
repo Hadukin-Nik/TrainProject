@@ -24,7 +24,9 @@ public class SlimeProvider extends EnemyProvider{
     protected Animation enemyWalk;
     protected Animation enemyStand;
     protected Animation enemyAttack;
+    protected Animation enemyDeath;
     protected boolean isAttacking;
+    protected boolean isDying;
     protected boolean orientationIsRight;
 
     public SlimeProvider(PlayScreen screen, EnemyData enemyData, Vector2 position, Vector2 textureSize, Vector2 box2d, boolean orientation) {
@@ -38,26 +40,33 @@ public class SlimeProvider extends EnemyProvider{
         setBounds(position.x, position.y, textureSize.x / Constants.PPM, textureSize.y / Constants.PPM);
     }
 
-    public void setAnimations(Animation walk, Animation stand, Animation attack) {
+    public void setAnimations(Animation walk, Animation stand, Animation attack, Animation death) {
         enemyAttack = attack;
         enemyStand = stand;
         enemyWalk = walk;
+        enemyDeath = death;
     }
     public Body getBody() {
         return b2body;
     }
     @Override
     public void update(double time){
-        if(!entityData.isAlive()) {
+        if(!entityData.isAlive() && !destroyed) {
             setToDestroy = true;
         }
+        setRegion(getFrame(time));
 
-        if(setToDestroy && !destroyed){
+        if(setToDestroy && !destroyed && !isDying){
             world.destroyBody(b2body);
+            isDying = true;
+            currentState = State.DEAD;
+            stateTimer = 0;
+            setToDestroy = false;
+        } else if (isDying && stateTimer > enemyDeath.getAnimationDuration()) {
             destroyed = true;
             stateTimer = 0;
         }
-        else if(!destroyed) {
+        else if(!destroyed && !isDying) {
             if(!isAttacking) currentState = updateState();
 
             if(isAttacking && stateTimer >= enemyAttack.getAnimationDuration()) {
@@ -154,6 +163,7 @@ public class SlimeProvider extends EnemyProvider{
                 region = (TextureRegion) enemyAttack.getKeyFrame((float) stateTimer, false);
                 break;
             case DEAD:
+                region = (TextureRegion) enemyDeath.getKeyFrame((float) stateTimer, true);
                 break;
             case FALLING:
             case WALKING:

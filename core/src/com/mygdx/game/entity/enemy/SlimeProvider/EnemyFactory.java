@@ -36,6 +36,7 @@ public class EnemyFactory {
         Animation enemyWalk;
         Animation enemyAttack;
         Animation enemyStand;
+        Animation enemyDeath;
 
         //get jump animation frames and add them to playerJump Animation
         enemyAttack = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/blue slime/pngs/blue slime attack.png", 5, size));
@@ -45,9 +46,11 @@ public class EnemyFactory {
 
         //get walk animation frames
         enemyWalk = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/blue slime/pngs/blue slime move.png", 3, size));
+        //get death animation frames
+        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/blue slime/pngs/blue death.png", 5, size));
 
 
-        slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack);
+        slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
 
         return slimeProvider;
     }
@@ -63,6 +66,7 @@ public class EnemyFactory {
         Animation enemyWalk;
         Animation enemyAttack;
         Animation enemyStand;
+        Animation enemyDeath;
 
         //get jump animation frames and add them to playerJump Animation
         enemyAttack = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green attack.png", 5, size));
@@ -71,10 +75,13 @@ public class EnemyFactory {
         enemyStand = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green idle.png", 4, size));
 
         //get walk animation frames
+        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green die.png", 5, size));
+
+        //get death animation frames
         enemyWalk = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green move.png", 3, size));
 
 
-        slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack);
+        slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
 
         return slimeProvider;
     }
@@ -89,6 +96,7 @@ public class EnemyFactory {
         Animation enemyWalk;
         Animation enemyAttack;
         Animation enemyStand;
+        Animation enemyDeath;
 
         //get jump animation frames and add them to playerJump Animation
         enemyAttack = new Animation(0.10f, getAnimation(Constants.PATH_TO_ENTITIES + "/dog/pngs/dog attack.png", 4, size));
@@ -99,8 +107,11 @@ public class EnemyFactory {
         //get walk animation frames
         enemyWalk = new Animation(0.15f, getAnimation(Constants.PATH_TO_ENTITIES + "/dog/pngs/dog run.png", 4, size));
 
+        //get death animation frames
+        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/dog/pngs/dog death.png", 3, size));
 
-        slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack);
+
+        slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
 
         return slimeProvider;
     }
@@ -115,6 +126,7 @@ public class EnemyFactory {
         Animation enemyWalk;
         Animation enemyAttack;
         Animation enemyStand;
+        Animation enemyDeath;
 
         //get jump animation frames and add them to playerJump Animation
         enemyAttack = new Animation(0.10f, getAnimation(Constants.PATH_TO_ENTITIES + "/tourel/pngs/tourel attack.png", 5, size));
@@ -125,8 +137,11 @@ public class EnemyFactory {
         //get walk animation frames
         enemyWalk = new Animation(0.15f, getAnimation(Constants.PATH_TO_ENTITIES + "/tourel/pngs/tourel run.png", 3, size));
 
+        //get death animation frames
+        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/tourel/pngs/tourel die.png", 6, size));
 
-        bug.setAnimations(enemyWalk, enemyStand, enemyAttack);
+
+        bug.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
 
         return bug;
     }
