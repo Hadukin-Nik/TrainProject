@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="100" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="109">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="100" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="123">
  <tileset firstgid="1" source="tiles.tsx"/>
  <layer id="2" name="Background" width="100" height="13">
   <data encoding="csv">
@@ -69,7 +69,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Gound" visible="0">
+ <objectgroup id="4" name="Gound">
   <object id="2" x="1.33333" y="224" width="14" height="124.667"/>
   <object id="5" x="16.6667" y="226.667" width="206.667" height="12"/>
   <object id="6" x="193.333" y="241.333" width="30" height="12.6667"/>
@@ -79,9 +79,7 @@
   <object id="13" x="0" y="0" width="256" height="224"/>
   <object id="14" x="256" y="0" width="448" height="96"/>
   <object id="15" x="672" y="96" width="32" height="128"/>
-  <object id="16" x="736" y="192" width="96" height="32"/>
   <object id="17" x="800" y="0" width="32" height="192"/>
-  <object id="18" x="736" y="96" width="64" height="32"/>
   <object id="19" x="704" y="0" width="96" height="32"/>
   <object id="20" x="960" y="224" width="128" height="32"/>
   <object id="21" x="1152" y="320" width="32" height="32"/>
@@ -99,6 +97,10 @@
   <object id="88" x="1172.67" y="288.667" width="5.33333" height="29.6667"/>
   <object id="101" x="2272" y="192" width="96" height="32"/>
   <object id="103" x="1760" y="192" width="480" height="32"/>
+  <object id="118" x="768" y="192" width="64" height="32"/>
+  <object id="119" x="751.667" y="192.333" width="16.3333" height="31.6667"/>
+  <object id="120" x="768" y="96" width="32" height="32"/>
+  <object id="121" x="752" y="96.6667" width="16" height="31.3333"/>
  </objectgroup>
  <objectgroup id="5" name="Traps" visible="0">
   <object id="34" x="768" y="320" width="32" height="32"/>
@@ -113,17 +115,12 @@
   <object id="44" x="2656" y="320" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="7" name="Elevators">
-  <object id="45" x="288" y="144" width="64" height="192"/>
-  <object id="46" x="576" y="144" width="64" height="192"/>
-  <object id="47" x="1664" y="144" width="64" height="192"/>
-  <object id="48" x="2752" y="144" width="64" height="192"/>
-  <object id="106" x="128" y="288" width="64" height="64"/>
+  <object id="45" x="288" y="160" width="64" height="192"/>
+  <object id="46" x="576" y="160" width="64" height="192"/>
+  <object id="47" x="1664" y="160" width="64" height="192"/>
+  <object id="48" x="2752" y="160" width="64" height="192"/>
  </objectgroup>
- <objectgroup id="8" name="Slime" visible="0">
-  <object id="49" x="736" y="160" width="32" height="32"/>
-  <object id="50" x="768" y="160" width="32" height="32"/>
-  <object id="51" x="736" y="64" width="32" height="32"/>
-  <object id="52" x="768" y="64" width="32" height="32"/>
+ <objectgroup id="8" name="Slime">
   <object id="53" x="992" y="192" width="32" height="32"/>
   <object id="54" x="1056" y="192" width="32" height="32"/>
   <object id="55" x="1856" y="320" width="32" height="32"/>
@@ -135,6 +132,7 @@
   <object id="61" x="448" y="320" width="32" height="32"/>
   <object id="62" x="480" y="160" width="32" height="32"/>
   <object id="63" x="416" y="160" width="32" height="32"/>
+  <object id="109" x="800" y="320" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="12" name="Potions" visible="0">
   <object id="89" x="2144" y="288" width="32" height="64"/>
@@ -148,28 +146,34 @@
   <object id="97" x="1120" y="288" width="32" height="32"/>
   <object id="98" x="416" y="288" width="32" height="64"/>
  </objectgroup>
- <objectgroup id="9" name="Dogs" visible="0">
+ <objectgroup id="9" name="Dogs">
   <object id="65" x="1920" y="160" width="32" height="32"/>
   <object id="66" x="2080" y="160" width="32" height="32"/>
-  <object id="68" x="1536" y="320" width="32" height="32"/>
   <object id="69" x="1600" y="320" width="32" height="32"/>
   <object id="70" x="992" y="320" width="32" height="32"/>
   <object id="71" x="544" y="160" width="32" height="32"/>
   <object id="72" x="2592" y="320" width="32" height="32"/>
   <object id="73" x="2688" y="320" width="32" height="32"/>
   <object id="74" x="3104" y="320" width="32" height="32"/>
+  <object id="110" x="736" y="160" width="32" height="32"/>
+  <object id="111" x="768" y="64" width="32" height="32"/>
+  <object id="116" x="2976" y="320" width="32" height="32"/>
+  <object id="117" x="3008" y="320" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="11" name="Turrel">
   <object id="76" x="1088" y="320" width="32" height="32"/>
   <object id="77" x="1344" y="288" width="32" height="32"/>
   <object id="79" x="1472" y="320" width="32" height="32"/>
   <object id="80" x="1376" y="320" width="32" height="32"/>
-  <object id="81" x="1760" y="160" width="32" height="32"/>
-  <object id="82" x="1792" y="160" width="32" height="32"/>
   <object id="83" x="2432" y="320" width="32" height="32"/>
   <object id="84" x="2560" y="320" width="32" height="32"/>
+  <object id="114" x="3008" y="320" width="32" height="32"/>
+  <object id="115" x="2976" y="320" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="Player">
   <object id="75" x="64" y="320" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="13" name="LevelEnder">
+  <object id="112" x="3040" y="288" width="64" height="64"/>
  </objectgroup>
 </map>

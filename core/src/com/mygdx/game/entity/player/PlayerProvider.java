@@ -101,7 +101,7 @@ public class PlayerProvider extends EntityProvider {
 
     public void jump(){
         if ( currentState != State.JUMPING ) {
-            b2body.applyLinearImpulse(new Vector2(0, (float) (entityData.getSpeed() * 7)), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0, (float) (entityData.getSpeed() * 9)), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }

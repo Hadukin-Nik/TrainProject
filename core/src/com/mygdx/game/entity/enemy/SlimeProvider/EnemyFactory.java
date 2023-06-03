@@ -30,7 +30,7 @@ public class EnemyFactory {
         Vector2 size = new Vector2(72, 64);
         Vector2 box2d = new Vector2(58,32);
 
-        SlimeProvider slimeProvider = new SlimeProvider(screen, new EnemyData(5, Constants.SPEED_STANDART / 5, 0.7, 10, 1), pos, size, box2d, false);
+        SlimeProvider slimeProvider = new SlimeProvider(screen, new EnemyData(5, Constants.SPEED_STANDART / 3, 0.7, 15, 1), pos, size, box2d, false);
         slimeProvider.addEnemy(player);
 
         Animation enemyWalk;
@@ -47,7 +47,7 @@ public class EnemyFactory {
         //get walk animation frames
         enemyWalk = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/blue slime/pngs/blue slime move.png", 3, size));
         //get death animation frames
-        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/blue slime/pngs/blue death.png", 5, size));
+        enemyDeath = new Animation(0.05f, getAnimation(Constants.PATH_TO_ENTITIES + "/blue slime/pngs/blue slime die.png", 5, size));
 
 
         slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
@@ -60,7 +60,7 @@ public class EnemyFactory {
         Vector2 size = new Vector2(72, 64);
         Vector2 box2d = new Vector2(58,32);
 
-        SlimeProvider slimeProvider = new SlimeProvider(screen, new EnemyData(5, Constants.SPEED_STANDART / 5, 0.5, 10, 1), pos, size, box2d, false);
+        SlimeProvider slimeProvider = new SlimeProvider(screen, new EnemyData(5, Constants.SPEED_STANDART / 3, 0.7, 15, 1), pos, size, box2d, false);
         slimeProvider.addEnemy(player);
 
         Animation enemyWalk;
@@ -74,11 +74,11 @@ public class EnemyFactory {
         //create animation frames for player standing
         enemyStand = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green idle.png", 4, size));
 
-        //get walk animation frames
-        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green die.png", 5, size));
-
         //get death animation frames
-        enemyWalk = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green move.png", 3, size));
+        enemyDeath = new Animation(0.05f, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green die.png", 5, size));
+
+        //get walk animation frames
+        enemyWalk = new Animation(0.5F, getAnimation(Constants.PATH_TO_ENTITIES + "/green slime/pngs/green move.png", 3, size));
 
 
         slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
@@ -90,7 +90,7 @@ public class EnemyFactory {
         Vector2 pos = new Vector2((rect.getX() + rect.getWidth() / 2) / Constants.PPM, (rect.getY() + rect.getHeight() / 2) / Constants.PPM);
         Vector2 size = new Vector2(64, 64);
         Vector2 box2d = new Vector2(34,27);
-        SlimeProvider slimeProvider = new SlimeProvider(screen, new EnemyData(5, 0.5, 0.5, 10, 1), pos, size, box2d, true);
+        SlimeProvider slimeProvider = new SlimeProvider(screen, new EnemyData(5, 0.5, 0.5, 20, 1), pos, size, box2d, true);
         slimeProvider.addEnemy(player);
 
         Animation enemyWalk;
@@ -108,7 +108,7 @@ public class EnemyFactory {
         enemyWalk = new Animation(0.15f, getAnimation(Constants.PATH_TO_ENTITIES + "/dog/pngs/dog run.png", 4, size));
 
         //get death animation frames
-        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/dog/pngs/dog death.png", 3, size));
+        enemyDeath = new Animation(0.15f, getAnimation(Constants.PATH_TO_ENTITIES + "/dog/pngs/dog death.png", 3, size));
 
 
         slimeProvider.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
@@ -138,7 +138,7 @@ public class EnemyFactory {
         enemyWalk = new Animation(0.15f, getAnimation(Constants.PATH_TO_ENTITIES + "/tourel/pngs/tourel run.png", 3, size));
 
         //get death animation frames
-        enemyDeath = new Animation(0.5f, getAnimation(Constants.PATH_TO_ENTITIES + "/tourel/pngs/tourel die.png", 6, size));
+        enemyDeath = new Animation(0.10f, getAnimation(Constants.PATH_TO_ENTITIES + "/tourel/pngs/tourel die.png", 6, size));
 
 
         bug.setAnimations(enemyWalk, enemyStand, enemyAttack, enemyDeath);
