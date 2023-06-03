@@ -48,16 +48,9 @@ public class SlimeProvider extends EnemyProvider{
     }
     @Override
     public void update(double time){
-        if(!isAttacking) currentState = updateState();
-
-        if(isAttacking && stateTimer >= enemyAttack.getAnimationDuration()) {
-            isAttacking = false;
-            currentState = updateState();
-            if(playerProvider.getPosition().dst2(b2body.getPosition()) < ((EnemyData)entityData).getAttackRange() * ((EnemyData)entityData).getAttackRange())
-                attack();
+        if(!entityData.isAlive()) {
+            setToDestroy = true;
         }
-
-        setRegion(getFrame(time));
 
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
@@ -65,6 +58,16 @@ public class SlimeProvider extends EnemyProvider{
             stateTimer = 0;
         }
         else if(!destroyed) {
+            if(!isAttacking) currentState = updateState();
+
+            if(isAttacking && stateTimer >= enemyAttack.getAnimationDuration()) {
+                isAttacking = false;
+                currentState = updateState();
+                if(playerProvider.getPosition().dst2(b2body.getPosition()) < ((EnemyData)entityData).getAttackRange() * ((EnemyData)entityData).getAttackRange())
+                    attack();
+            }
+
+            setRegion(getFrame(time));
             turn(time);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         }
@@ -112,6 +115,7 @@ public class SlimeProvider extends EnemyProvider{
         shape.setAsBox(size.x / 2 / Constants.PPM, size.y / 2 / Constants.PPM);
         fdef.filter.categoryBits = Masks.ENEMY_BIT;
         fdef.filter.maskBits = Masks.GROUND_BIT |
+                Masks.BULLET_BIT |
                 Masks.BRICK_BIT |
                 Masks.OBJECT_BIT |
                 Masks.PLAYER_BIT;

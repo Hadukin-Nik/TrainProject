@@ -12,7 +12,7 @@ public class WorldContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
-        //int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         switch (cDef){
@@ -34,6 +34,14 @@ public class WorldContactListener implements ContactListener {
                     ((EnemyProvider)fixB.getUserData()).damage(((PlayerProvider) fixA.getUserData()).getEntityData());
                 }
                 break;
+            case Masks.GROUND_BIT | Masks.BULLET_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.BULLET_BIT) {
+                    ((BulletProvider)fixA.getUserData()).damage();
+                }
+                else {
+                    ((BulletProvider)fixB.getUserData()).damage();
+                }
+                break;
             case Masks.ENEMY_BIT | Masks.BULLET_BIT:
                 if(fixA.getFilterData().categoryBits == Masks.BULLET_BIT) {
                     ((BulletProvider)fixA.getUserData()).damage(((EnemyProvider) fixB.getUserData()).getEntityData());
@@ -48,6 +56,7 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Potion)fixB.getUserData()).collision(((PlayerProvider) fixA.getUserData()));
                 break;
+
             case Masks.ENEMY_BIT | Masks.OBJECT_BIT:
             case Masks.ENEMY_BIT | Masks.GROUND_BIT:
                 if(fixA.getFilterData().categoryBits == Masks.ENEMY_BIT)
@@ -55,6 +64,7 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((EnemyProvider)fixB.getUserData()).collisionWithoutDamage();
                 break;
+
         }
     }
 

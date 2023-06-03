@@ -93,4 +93,10 @@ public class BulletProvider extends EntityProvider {
         setToDestroy = true;
         stateTimer = 0;
     }
+
+    public void damage() {
+        if(currentState == State.DEAD) return;
+        setToDestroy = true;
+        stateTimer = 0;
+    }
 }

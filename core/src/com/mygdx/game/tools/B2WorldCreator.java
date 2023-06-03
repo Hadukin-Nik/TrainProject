@@ -58,7 +58,7 @@ public class B2WorldCreator {
             body.createFixture(fdef);
         }
         //create elevators
-        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+       /* for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             Vector2 size = new Vector2(64,8);
@@ -68,7 +68,7 @@ public class B2WorldCreator {
             MovingPlatform mv = new MovingPlatform(from, to, Constants.SPEED_STANDART / 2);
             mv.definePlatform(screen, texture, size, size);
         }
-
+*/
 
         //create turrel
         for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
@@ -77,7 +77,7 @@ public class B2WorldCreator {
             screen.addToUpdate(enemy);
         }
         //create slimes
-
+/*
         for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             EnemyProvider enemy = EnemyFactory.randSlime(rect, screen, player);
@@ -97,6 +97,8 @@ public class B2WorldCreator {
             EntityProvider potion = PotionFactory.createRandomPotion(rect, screen, (PlayerData) player.getEntityData());
             screen.addToUpdate(potion);
         }
+        /*
+ */
     }
 
     public PlayerProvider getPlayer() {

@@ -155,9 +155,9 @@ public class PlayerProvider extends EntityProvider {
                 float y = 0;
                 Vector2 dir = new Vector2(x, y);
 
-                Vector2 loc = new Vector2(b2body.getPosition().x * Constants.PPM, b2body.getPosition().y * Constants.PPM);
+                Vector2 loc = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
 
-                BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, Constants.SPEED_STANDART * 10, 1.0, 1.0), dir.nor(), Masks.ENEMY_BIT);
+                BulletProvider bullet = new BulletProvider(screen.getWorld(), loc, new BulletData(new Vector2(8,8), 4, Constants.SPEED_STANDART , 1.0, 10), dir.nor(), Masks.ENEMY_BIT );
                 screen.addToUpdate(bullet);
             }
 
