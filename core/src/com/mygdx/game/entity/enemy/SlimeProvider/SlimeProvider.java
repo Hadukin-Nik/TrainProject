@@ -51,6 +51,11 @@ public class SlimeProvider extends EnemyProvider{
     }
     @Override
     public void update(double time){
+        if(playerProvider.getCurrentState() == State.DEAD) {
+            currentState = State.STANDING;
+            setRegion(getFrame(time));
+            return;
+        }
         if(!entityData.isAlive() && !destroyed) {
             setToDestroy = true;
         }

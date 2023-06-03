@@ -37,6 +37,8 @@ public class PlayerProvider extends EntityProvider {
 
     private PlayScreen screen;
 
+    private boolean setToDestroy;
+
     public PlayerProvider(Vector2 location, PlayerData data, PlayScreen screen) {
         super();
 
@@ -84,13 +86,28 @@ public class PlayerProvider extends EntityProvider {
      * @param time delta time of screen update
      */
     public void update(double time) {
-        currentState = updateState();
-        timerToShoot = timerToShoot > 0 ? (float) (timerToShoot - time) : 0;
-        handleInput(time);
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        if(updateState() == State.DEAD && !setToDestroy) {
+            setToDestroy = true;
+            stateTimer = 0;
+        }
 
-        //update sprite with the correct frame
-        setRegion(getFrame(time));
+        if(setToDestroy && stateTimer > 0.1) {
+            world.destroyBody(b2body);
+            setToDestroy = false;
+            currentState = State.DEAD;
+        } else if(setToDestroy) {
+            stateTimer += time;
+        }
+
+        if(currentState != State.DEAD && !setToDestroy) {
+            currentState = updateState();
+            timerToShoot = timerToShoot > 0 ? (float) (timerToShoot - time) : 0;
+            handleInput(time);
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+
+            //update sprite with the correct frame
+            setRegion(getFrame(time));
+        }
     }
 
     @Override
@@ -160,7 +177,6 @@ public class PlayerProvider extends EntityProvider {
                 BulletProvider bullet = new BulletProvider(screen.getWorld(), loc, new BulletData(new Vector2(8,8), 4, Constants.SPEED_STANDART , 1.0, 10), dir.nor(), Masks.ENEMY_BIT );
                 screen.addToUpdate(bullet);
             }
-
             if ((currentState == State.RUNNING || currentState == State.POSTRUNNING) && ismove && ((PlayerData) entityData).getStamina() > 0){
                 ((PlayerData) entityData).decreaseStamina(0.2f);
             } else {
