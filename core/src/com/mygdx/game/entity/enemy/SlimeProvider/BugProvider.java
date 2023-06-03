@@ -56,7 +56,7 @@ public class BugProvider extends SlimeProvider {
             Vector2 loc = new Vector2(pp.x, pp.y);
 
 
-            BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(8,8), 1.4, 0.2, 1.0, 1.0), dir.nor(), Masks.PLAYER_BIT);
+            BulletProvider bullet = new BulletProvider(world, loc, new BulletData(new Vector2(2,1), 1.4, 0.2, 1.0, 1.0), dir.nor(), Masks.PLAYER_BIT);
             screen.addToUpdate(bullet);
         }
     }

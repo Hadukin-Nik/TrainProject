@@ -30,7 +30,7 @@ public class GameOver implements Screen {
         Vector2 size = game.getConfig();
         scale = Math.min((size.x - spriteText.getWidth()) / spriteText.getWidth(), (size.x - spriteMonitor.getWidth()) / spriteMonitor.getWidth());
         scale = Math.min(scale, Math.min((size.y - spriteText.getHeight()) / spriteText.getHeight(), (size.y - spriteMonitor.getHeight()/spriteMonitor.getHeight())));
-
+        scale = 3.0F;
 
     }
 

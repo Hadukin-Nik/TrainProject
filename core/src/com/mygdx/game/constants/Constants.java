@@ -21,6 +21,7 @@ public class Constants {
 
 
     public static final String PATH_TO_STANDART_IMAGE = "pngs/StandartCircle.png";
+    public static final String PATH_TO_STANDART_BULLET = "pngs/tiles/bullet.png";
     public static final String PATH_TO_ENTITIES = "pngs/entities";
 
 

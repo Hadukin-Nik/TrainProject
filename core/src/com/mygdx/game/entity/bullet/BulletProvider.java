@@ -31,7 +31,8 @@ public class BulletProvider extends EntityProvider {
 
         //initial texture
         setBounds(location.x, location.y, data.getSize().x / Constants.PPM, data.getSize().x / Constants.PPM);
-        bulletInFly = new TextureRegion(new Texture(Constants.PATH_TO_STANDART_IMAGE), 16, 16);
+        bulletInFly = new TextureRegion(new Texture(Constants.PATH_TO_STANDART_BULLET));
+
 
         setRegion(bulletInFly);
 

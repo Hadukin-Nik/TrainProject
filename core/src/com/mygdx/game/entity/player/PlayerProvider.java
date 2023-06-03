@@ -166,7 +166,7 @@ public class PlayerProvider extends EntityProvider {
                 ismove = true;
             }
             if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && timerToShoot == 0) {
-                timerToShoot = 1;
+                timerToShoot = 0.5F;
 
                 float x = runningRight ? 1 : -1;
                 float y = 0;
@@ -174,7 +174,7 @@ public class PlayerProvider extends EntityProvider {
 
                 Vector2 loc = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
 
-                BulletProvider bullet = new BulletProvider(screen.getWorld(), loc, new BulletData(new Vector2(8,8), 4, Constants.SPEED_STANDART , 1.0, 10), dir.nor(), Masks.ENEMY_BIT );
+                BulletProvider bullet = new BulletProvider(screen.getWorld(), loc, new BulletData(new Vector2(2,1), 4, Constants.SPEED_STANDART , 1.0, 10), dir.nor(), Masks.ENEMY_BIT );
                 screen.addToUpdate(bullet);
             }
             if ((currentState == State.RUNNING || currentState == State.POSTRUNNING) && ismove && ((PlayerData) entityData).getStamina() > 0){
