@@ -19,6 +19,6 @@ public class StaminaRestoreEffect extends Effect{
 
     @Override
     protected void effectOnUpdate(double dt) {
-        playerData.addHP(staminaInSecond * dt);
+        playerData.addStamina((float) (staminaInSecond * dt));
     }
 }
