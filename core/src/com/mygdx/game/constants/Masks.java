@@ -10,5 +10,5 @@ public class Masks {
     public static final short RANGE_BIT = 16;
     public static final short OBJECT_BIT = 32;
     public static final short ENEMY_BIT = 64;
-
+    public static final short GAME_ENDER_BIT = 128;
 }

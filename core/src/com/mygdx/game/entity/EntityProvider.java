@@ -8,7 +8,7 @@ import com.mygdx.game.interfaces.IUpdatable;
 import com.mygdx.game.screen.PlayScreen;
 
 public abstract class EntityProvider extends Sprite implements IUpdatable {
-    public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD, WALKING, POSTRUNNING, ATTACK }
+    public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD, WALKING, POSTRUNNING, ATTACK, VICTORY }
 
     protected double stateTimer;
 

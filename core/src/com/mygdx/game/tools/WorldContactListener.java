@@ -6,8 +6,15 @@ import com.mygdx.game.entity.bullet.BulletProvider;
 import com.mygdx.game.entity.enemy.EnemyProvider;
 import com.mygdx.game.entity.items.Potion;
 import com.mygdx.game.entity.player.PlayerProvider;
+import com.mygdx.game.screen.PlayScreen;
 
 public class WorldContactListener implements ContactListener {
+    private PlayScreen playScreen;
+
+    public void setPlayScreen(PlayScreen playScreen) {
+        this.playScreen = playScreen;
+    }
+
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
@@ -56,7 +63,12 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Potion)fixB.getUserData()).collision(((PlayerProvider) fixA.getUserData()));
                 break;
-
+            case Masks.PLAYER_BIT | Masks.GAME_ENDER_BIT:
+                if(fixA.getFilterData().categoryBits == Masks.PLAYER_BIT)
+                    playScreen.moveToNextLeve();
+                else
+                    playScreen.moveToNextLeve();
+                break;
             case Masks.ENEMY_BIT | Masks.OBJECT_BIT:
             case Masks.ENEMY_BIT | Masks.GROUND_BIT:
                 if(fixA.getFilterData().categoryBits == Masks.ENEMY_BIT)

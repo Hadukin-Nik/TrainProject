@@ -98,8 +98,9 @@ public class Level {
         b2dr = new Box2DDebugRenderer();
 
         entitiesToUpdate = new ArrayList<>();
-
-        world.setContactListener(new WorldContactListener());
+        WorldContactListener worldContactListener = new WorldContactListener();
+        worldContactListener.setPlayScreen(playScreen);
+        world.setContactListener(worldContactListener);
     }
 
     public int update(float dt) {

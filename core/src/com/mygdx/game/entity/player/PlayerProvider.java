@@ -86,6 +86,7 @@ public class PlayerProvider extends EntityProvider {
      * @param time delta time of screen update
      */
     public void update(double time) {
+
         if(updateState() == State.DEAD && !setToDestroy) {
             setToDestroy = true;
             stateTimer = 0;
@@ -134,7 +135,7 @@ public class PlayerProvider extends EntityProvider {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(11 / Constants.PPM, 29 / Constants.PPM);
         fdef.filter.categoryBits = Masks.PLAYER_BIT;
-        fdef.filter.maskBits = Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.ENEMY_BIT | Masks.BULLET_BIT;
+        fdef.filter.maskBits = Masks.GROUND_BIT | Masks.OBJECT_BIT | Masks.ENEMY_BIT | Masks.BULLET_BIT | Masks.GAME_ENDER_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);

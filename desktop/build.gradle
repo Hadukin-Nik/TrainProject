@@ -30,6 +30,9 @@ task debug(dependsOn: classes, type: JavaExec) {
 }
 
 task dist(type: Jar) {
+    task wrapper(type: Wrapper) {
+        gradleVersion = '4.1'
+    }
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
         attributes 'Main-Class': project.mainClassName
